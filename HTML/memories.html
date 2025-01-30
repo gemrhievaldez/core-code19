@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternal Memories</title>
+    <link rel="stylesheet" href="style1.css"> <!-- Link to your CSS -->
+    <script src="script1.js" defer></script>
+</head>
+<body>
+    <h1>Eternal Memories</h1>
+    <div class="gallery">
+        <img src="images/image1.jpg" alt="Memory 1" onclick="openModal(this.src)">
+        <img src="images/image2.jpg" alt="Memory 2" onclick="openModal(this.src)">
+        <img src="images/space1.jpeg" alt="Memory 3" onclick="openModal(this.src)">
+        <img src="path/to/image4.jpg" alt="Memory 4" onclick="openModal(this.src)">
+        <img src="path/to/image5.jpg" alt="Memory 5" onclick="openModal(this.src)">
+        <img src="path/to/image6.jpg" alt="Memory 6" onclick="openModal(this.src)">
+        <img src="path/to/image7.jpg" alt="Memory 7" onclick="openModal(this.src)">
+        <img src="path/to/image8.jpg" alt="Memory 8" onclick="openModal(this.src)">
+        <!-- Add more images as needed -->
+    </div>
+
+    <!-- Modal for displaying full-size images -->
+    <div id="myModal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // Function to open modal
+        function openModal(src) {
+            document.getElementById("myModal").style.display = "block";
+            document.getElementById("img01").src = src;
+        }
+
+        // Function to close modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
