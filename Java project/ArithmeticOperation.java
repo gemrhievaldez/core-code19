@@ -35,13 +35,7 @@ public class ArithmeticOperation{
          System.out.println("The Product is: " + product);
          System.out.println("The Divide is: " + divide);
          System.out.println("The Difference is: " + difference); 
-         
-         
-         
-         
-         
-         
-         
+           
      }
      
 }
