@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracking - SmartForecast</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#6366f1'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #4f46e5;
+            background-color: #f8fafc;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        input[type=checkbox] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            margin-right: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+        input[type=checkbox]:checked {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        input[type=checkbox]:checked::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            top: 3px;
+            left: 7px;
+            transform: rotate(45deg);
+        }
+        .category-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="w-full bg-white shadow-sm py-4">
+            <div class="container mx-auto px-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-['Pacifico'] text-gray-800">logo</h1>
+                    <span class="mx-4 text-gray-300">|</span>
+                    <span class="text-gray-600">SmartForecast</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full">
+                        <i class="ri-notification-3-line text-gray-500"></i>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-medium">KJ</div>
+                        <div class="ml-2">
+                            <p class="text-sm font-medium text-gray-700">K & J Minimart</p>
+                            <p class="text-xs text-gray-500">Admin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Page Header -->
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">💼 Expense Tracking</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto">Easily upload your expense files for automated tracking and analysis</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <!-- Upload Area -->
+                    <div class="bg-white rounded shadow-sm p-6 mb-8">
+                        <div id="upload-area" class="upload-area rounded p-8 flex flex-col items-center justify-center cursor-pointer">
+                            <div class="w-16 h-16 flex items-center justify-center text-gray-400 mb-4">
+                                <i class="ri-upload-cloud-2-line ri-3x"></i>
+                            </div>
+                            <p class="text-gray-700 font-medium mb-2">Drag and drop your files here</p>
+                            <p class="text-gray-500 text-sm mb-6">or click to browse</p>
+                            <button id="upload-btn" class="bg-primary text-white px-6 py-3 !rounded-button whitespace-nowrap shadow-sm hover:bg-primary/90 transition-colors">
+                                📤 Upload Expense Spreadsheet
+                            </button>
+                            <p class="text-gray-500 text-xs mt-4">Supported formats: .csv, .xlsx</p>
+                            <input type="file" id="file-input" accept=".csv,.xlsx">
+                        </div>
+                        <div class="flex justify-end mt-4">
+                            <a href="#" class="text-primary text-sm hover:underline">📄 View sample format</a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Upload History -->
+                    <div class="bg-white rounded shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-semibold text-gray-800">Recent Upload History</h2>
+                            <div class="flex items-center space-x-2">
+                                <div class="relative">
+                                    <button id="filter-btn" class="flex items-center text-gray-600 border border-gray-300 !rounded-button px-3 py-2 text-sm whitespace-nowrap">
+                                        <span class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-filter-3-line"></i>
+                                        </span>
+                                        Filter
+                                    </button>
+                                    <div id="filter-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 p-2">
+                                        <div class="p-2">
+                                            <p class="font-medium text-gray-700 mb-2">Status</p>
+                                            <div class="flex items-center mb-2">
+                                                <input type="checkbox" id="processed" checked>
+                                                <label for="processed" class="text-sm text-gray-600">Processed</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" id="error" checked>
+                                                <label for="error" class="text-sm text-gray-600">Error</label>
+                                            </div>
+                                        </div>
+                                        <div class="border-t border-gray-100 mt-2 pt-2 flex justify-end">
+                                            <button class="text-primary text-sm font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <button id="sort-btn" class="flex items-center text-gray-600 border border-gray-300 !rounded-button px-3 py-2 text-sm whitespace-nowrap">
+                                        <span class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-sort-desc"></i>
+                                        </span>
+                                        Sort
+                                    </button>
+                                    <div id="sort-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 p-2">
+                                        <div class="p-2">
+                                            <p class="font-medium text-gray-700 mb-2">Sort by</p>
+                                            <div class="flex items-center mb-2">
+                                                <input type="radio" id="date-new" name="sort" checked class="mr-2">
+                                                <label for="date-new" class="text-sm text-gray-600">Date (Newest)</label>
+                                            </div>
+                                            <div class="flex items-center mb-2">
+                                                <input type="radio" id="date-old" name="sort" class="mr-2">
+                                                <label for="date-old" class="text-sm text-gray-600">Date (Oldest)</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input type="radio" id="name" name="sort" class="mr-2">
+                                                <label for="name" class="text-sm text-gray-600">File Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="border-t border-gray-100 mt-2 pt-2 flex justify-end">
+                                            <button class="text-primary text-sm font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">File Name</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Upload Date</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Status</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-sm text-gray-800">April_Expenses_2025.xlsx</td>
+                                        <td class="py-3 px-4 text-sm text-gray-600">Apr 12, 2025</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Processed
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button class="text-primary text-sm font-medium hover:underline whitespace-nowrap">📊 View Data</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-sm text-gray-800">March_Expenses_2025.csv</td>
+                                        <td class="py-3 px-4 text-sm text-gray-600">Mar 30, 2025</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Processed
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button class="text-primary text-sm font-medium hover:underline whitespace-nowrap">📊 View Data</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-sm text-gray-800">Quarterly_Report_Q1.xlsx</td>
+                                        <td class="py-3 px-4 text-sm text-gray-600">Mar 15, 2025</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Error
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button class="text-red-500 text-sm font-medium hover:underline whitespace-nowrap">View Error</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-sm text-gray-800">February_Expenses_2025.csv</td>
+                                        <td class="py-3 px-4 text-sm text-gray-600">Feb 28, 2025</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Processed
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button class="text-primary text-sm font-medium hover:underline whitespace-nowrap">📊 View Data</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-sm text-gray-800">January_Expenses_2025.xlsx</td>
+                                        <td class="py-3 px-4 text-sm text-gray-600">Jan 31, 2025</td>
+                                        <td class="py-3 px-4">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Processed
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button class="text-primary text-sm font-medium hover:underline whitespace-nowrap">📊 View Data</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-between items-center mt-6">
+                            <p class="text-sm text-gray-600">Showing 5 of 12 files</p>
+                            <div class="flex space-x-2">
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 !rounded-button text-gray-600 hover:bg-gray-50">
+                                    <i class="ri-arrow-left-s-line"></i>
+                                </button>
+                                <button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-white !rounded-button">1</button>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 !rounded-button text-gray-600 hover:bg-gray-50">2</button>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 !rounded-button text-gray-600 hover:bg-gray-50">3</button>
+                                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 !rounded-button text-gray-600 hover:bg-gray-50">
+                                    <i class="ri-arrow-right-s-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <!-- Category Legend -->
+                    <div class="bg-white rounded shadow-sm p-6 mb-8 sticky top-4">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Expense Categories</h2>
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <span class="category-dot" style="background-color: #57b5e7;"></span>
+                                <span class="text-gray-700">Inventory Purchases</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="category-dot" style="background-color: #fc8d62;"></span>
+                                <span class="text-gray-700">Store Rent</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="category-dot" style="background-color: #fbbf72;"></span>
+                                <span class="text-gray-700">Utilities</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="category-dot" style="background-color: #8dd3c7;"></span>
+                                <span class="text-gray-700">Staff Wages</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="category-dot" style="background-color: #bebada;"></span>
+                                <span class="text-gray-700">Maintenance & Supplies</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Notes Panel -->
+                    <div class="bg-white rounded shadow-sm p-6">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full text-primary mr-3">
+                                <i class="ri-information-line"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">Important Notes</h3>
+                                <p class="text-gray-600 text-sm">Make sure your spreadsheet includes:</p>
+                                <ul class="mt-2 space-y-1 text-sm text-gray-600">
+                                    <li class="flex items-center">
+                                        <span class="w-4 h-4 flex items-center justify-center text-primary mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                        Date
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="w-4 h-4 flex items-center justify-center text-primary mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                        Category
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="w-4 h-4 flex items-center justify-center text-primary mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                        Description
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="w-4 h-4 flex items-center justify-center text-primary mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                        Amount
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="w-4 h-4 flex items-center justify-center text-primary mr-2">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                        Supplier (optional)
+                                    </li>
+                                </ul>
+                                <a href="#" class="inline-block mt-4 text-primary text-sm hover:underline">Download template</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="success-toast" class="toast bg-green-50 border-l-4 border-green-500 p-4 rounded shadow-lg max-w-md">
+        <div class="flex items-center">
+            <div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full text-green-500 mr-3">
+                <i class="ri-check-line"></i>
+            </div>
+            <div>
+                <p class="font-medium text-green-800">Success!</p>
+                <p class="text-sm text-green-600">File uploaded successfully</p>
+            </div>
+            <button class="ml-auto text-gray-400 hover:text-gray-500" onclick="hideToast('success-toast')">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="error-toast" class="toast bg-red-50 border-l-4 border-red-500 p-4 rounded shadow-lg max-w-md">
+        <div class="flex items-center">
+            <div class="w-8 h-8 flex items-center justify-center bg-red-100 rounded-full text-red-500 mr-3">
+                <i class="ri-error-warning-line"></i>
+            </div>
+            <div>
+                <p class="font-medium text-red-800">Error!</p>
+                <p class="text-sm text-red-600">Invalid format – please follow the template</p>
+            </div>
+            <button class="ml-auto text-gray-400 hover:text-gray-500" onclick="hideToast('error-toast')">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            const filterBtn = document.getElementById('filter-btn');
+            const filterDropdown = document.getElementById('filter-dropdown');
+            const sortBtn = document.getElementById('sort-btn');
+            const sortDropdown = document.getElementById('sort-dropdown');
+
+            // Upload functionality
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('border-primary', 'bg-blue-50');
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('border-primary', 'bg-blue-50');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('border-primary', 'bg-blue-50');
+                
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    handleFile(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length) {
+                    handleFile(fileInput.files[0]);
+                }
+            });
+
+            uploadBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            // Filter dropdown
+            filterBtn.addEventListener('click', function() {
+                filterDropdown.classList.toggle('hidden');
+                sortDropdown.classList.add('hidden');
+            });
+
+            // Sort dropdown
+            sortBtn.addEventListener('click', function() {
+                sortDropdown.classList.toggle('hidden');
+                filterDropdown.classList.add('hidden');
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!filterBtn.contains(e.target) && !filterDropdown.contains(e.target)) {
+                    filterDropdown.classList.add('hidden');
+                }
+                if (!sortBtn.contains(e.target) && !sortDropdown.contains(e.target)) {
+                    sortDropdown.classList.add('hidden');
+                }
+            });
+
+            // Handle file upload
+            function handleFile(file) {
+                const fileType = file.name.split('.').pop().toLowerCase();
+                
+                if (fileType === 'csv' || fileType === 'xlsx') {
+                    showToast('success-toast');
+                } else {
+                    showToast('error-toast');
+                }
+            }
+        });
+
+        function showToast(id) {
+            const toast = document.getElementById(id);
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                hideToast(id);
+            }, 3000);
+        }
+
+        function hideToast(id) {
+            const toast = document.getElementById(id);
+            toast.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
