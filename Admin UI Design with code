@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard Preview</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Scrollbar for sidebar */
+    aside::-webkit-scrollbar {
+      width: 6px;
+    }
+    aside::-webkit-scrollbar-thumb {
+      background-color: #00bcd4dd;
+      border-radius: 3px;
+    }
+    .tooltip {
+      position: relative;
+      cursor: pointer;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 180px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 8px;
+      position: absolute;
+      z-index: 50;
+      bottom: 150%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    /* Transition for sidebar */
+    .sidebar-transition {
+      transition: transform 0.3s ease-in-out;
+    }
+    /* Simple scrollbar for logs accordions */
+    .log-scroll {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+  <div id="app" class="flex flex-1 min-h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar-transition fixed inset-y-0 left-0 z-30 w-64 bg-[#003366] text-white flex flex-col overflow-y-auto transform translate-x-0 md:translate-x-0">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-cyan-500">
+        <h1 class="text-xl font-semibold tracking-wide">Admin Panel</h1>
+        <button id="sidebar-close" class="md:hidden focus:outline-none" aria-label="Close Sidebar">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <nav id="nav-links" class="flex flex-col flex-grow mt-6 px-2 space-y-1 text-sm">
+        <a href="#dashboard" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="dashboard" aria-current="page">
+          <i data-feather="home" class="w-5 h-5 mr-2"></i> Dashboard
+        </a>
+        <a href="#user-management" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="user-management">
+          <i data-feather="users" class="w-5 h-5 mr-2"></i> User Management
+        </a>
+        <a href="#import-management" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="import-management">
+          <i data-feather="download" class="w-5 h-5 mr-2"></i> Import Management
+        </a>
+        <a href="#backup-restore" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="backup-restore">
+          <i data-feather="refresh-cw" class="w-5 h-5 mr-2"></i> Backup & Restore
+        </a>
+        <a href="#system-settings" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="system-settings">
+          <i data-feather="settings" class="w-5 h-5 mr-2"></i> System Settings
+        </a>
+        <a href="#logs-security" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="logs-security">
+          <i data-feather="file-text" class="w-5 h-5 mr-2"></i> Logs & Security
+        </a>
+        <a href="#ml-model-control" class="nav-link flex items-center px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer font-semibold" data-tab="ml-model-control">
+          <i data-feather="cpu" class="w-5 h-5 mr-2"></i> ML Model Control
+        </a>
+        <button id="logout-btn" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-cyan-500 cursor-pointer w-full mt-auto mb-4 focus:outline-none font-semibold">
+          <i data-feather="log-out" class="w-5 h-5"></i>
+          <span>Logout</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"></div>
+
+    <!-- Main content wrapper -->
+    <div class="flex flex-col flex-1 overflow-hidden ml-0 md:ml-64">
+      <!-- Header -->
+      <header class="flex items-center justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 shadow sticky top-0 z-20">
+        <div class="flex items-center space-x-3">
+          <button id="sidebar-open" class="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none" aria-label="Open Sidebar">
+            <i data-feather="menu" class="w-6 h-6"></i>
+          </button>
+          <input type="search" id="globalSearch" placeholder="Search navigation..." class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-700 focus:ring-2 focus:ring-cyan-400 text-gray-900 dark:text-gray-100 w-72" aria-label="Search navigation" />
+        </div>
+
+        <div>
+          <label for="darkModeToggle" class="flex items-center cursor-pointer select-none" title="Toggle Dark Mode">
+            <input type="checkbox" id="darkModeToggle" class="hidden" />
+            <i data-feather="moon" class="w-5 h-5 mr-1"></i>
+            <span>Dark Mode</span>
+          </label>
+        </div>
+      </header>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto px-6 py-6">
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="tab-content" tabindex="0" aria-label="Dashboard section">
+          <h2 class="text-2xl font-semibold mb-4">Dashboard Overview</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5 flex items-center space-x-4">
+              <i data-feather="users" class="text-cyan-400 w-8 h-8"></i>
+              <div>
+                <p class="text-gray-500 dark:text-gray-300">Total Active Users</p>
+                <p class="text-xl font-bold">4,532</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5 flex items-center space-x-4">
+              <i data-feather="check-circle" class="text-green-400 w-8 h-8"></i>
+              <div>
+                <p class="text-gray-500 dark:text-gray-300">Last Import</p>
+                <p class="text-xl font-bold">Success</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5 flex items-center space-x-4">
+              <i data-feather="bar-chart-2" class="text-cyan-400 w-8 h-8"></i>
+              <div>
+                <p class="text-gray-500 dark:text-gray-300">Forecast Accuracy Score</p>
+                <p class="text-xl font-bold">87.3%</p>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-5 flex items-center space-x-4">
+              <i data-feather="database" class="text-cyan-400 w-8 h-8"></i>
+              <div>
+                <p class="text-gray-500 dark:text-gray-300">Last System Backup</p>
+                <p class="text-xl font-bold">2024-06-20</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-8">
+            <h3 class="text-lg font-semibold mb-2">Forecast Accuracy Over Time</h3>
+            <canvas id="forecastChart" aria-label="Forecast accuracy line chart" role="img"></canvas>
+          </div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow max-w-4xl">
+            <h3 class="text-lg font-semibold mb-4">Recent Notifications</h3>
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+              <li class="py-2">
+                <span class="inline-block bg-red-600 text-white text-xs px-2 rounded mr-2">Error</span> Import failed on June 19th
+              </li>
+              <li class="py-2">
+                <span class="inline-block bg-yellow-400 text-gray-900 text-xs px-2 rounded mr-2">Warning</span> Forecast accuracy dropped below 75% last week
+              </li>
+              <li class="py-2">
+                <span class="inline-block bg-red-600 text-white text-xs px-2 rounded mr-2">Error</span> Backup failed - disk space low
+              </li>
+              <li class="py-2">
+                <span class="inline-block bg-cyan-500 text-white text-xs px-2 rounded mr-2">Info</span> System maintenance scheduled for June 25th
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- User Management Section -->
+        <section id="user-management" class="tab-content hidden" tabindex="0" aria-label="User Management section">
+          <h2 class="text-2xl font-semibold mb-4">User Management</h2>
+          <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-3">
+            <input type="text" id="userSearch" placeholder="Search users..." class="px-3 py-2 border rounded w-full sm:w-64" aria-label="Search users"/>
+            <select id="filterRole" class="px-3 py-2 border rounded w-full sm:w-48" aria-label="Filter by user role">
+              <option value="">All Roles</option>
+              <option value="Business Owner">Business Owner</option>
+              <option value="Staff">Staff</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <select id="filterStatus" class="px-3 py-2 border rounded w-full sm:w-48" aria-label="Filter by user status">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <button id="addUserBtn" class="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 focus:outline-none">Add User</button>
+          </div>
+          <div class="overflow-x-auto rounded-lg shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" aria-label="User Management Table">
+              <thead class="bg-gray-50 dark:bg-gray-900">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <!-- Sample entries -->
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">Alice Johnson</td>
+                  <td class="px-6 py-4 whitespace-nowrap">alice@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Business Owner</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Active</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center space-x-2">
+                    <button aria-label="Edit Alice Johnson" class="text-cyan-600 hover:text-cyan-800 focus:outline-none"><i data-feather="edit" class="w-5 h-5 inline"></i></button>
+                    <button aria-label="Delete Alice Johnson" class="text-red-600 hover:text-red-800 focus:outline-none"><i data-feather="trash-2" class="w-5 h-5 inline"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">Bob Smith</td>
+                  <td class="px-6 py-4 whitespace-nowrap">bob@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Staff</td>
+                  <td class="px-6 py-4 whitespace-nowrap">Inactive</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center space-x-2">
+                    <button aria-label="Edit Bob Smith" class="text-cyan-600 hover:text-cyan-800 focus:outline-none"><i data-feather="edit" class="w-5 h-5 inline"></i></button>
+                    <button aria-label="Delete Bob Smith" class="text-red-600 hover:text-red-800 focus:outline-none"><i data-feather="trash-2" class="w-5 h-5 inline"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add/Edit User Modal -->
+          <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden" aria-modal="true" role="dialog" aria-labelledby="userModalTitle">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md relative shadow-lg">
+              <h3 class="text-xl font-semibold mb-4" id="userModalTitle">Add User</h3>
+              <form id="userForm" class="space-y-4">
+                <div>
+                  <label for="userName" class="block text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                  <input type="text" id="userName" name="name" required class="w-full px-3 py-2 border rounded focus:ring-cyan-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" />
+                </div>
+                <div>
+                  <label for="userEmail" class="block text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                  <input type="email" id="userEmail" name="email" required class="w-full px-3 py-2 border rounded focus:ring-cyan-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" />
+                </div>
+                <div>
+                  <label for="userRole" class="block text-gray-700 dark:text-gray-300 mb-1">Role</label>
+                  <select id="userRole" name="role" required class="w-full px-3 py-2 border rounded focus:ring-cyan-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+                    <option value="">Select role</option>
+                    <option>Business Owner</option>
+                    <option>Staff</option>
+                    <option>Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="userPassword" class="block text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                  <input type="password" id="userPassword" name="password" required class="w-full px-3 py-2 border rounded focus:ring-cyan-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" />
+                </div>
+                <div class="flex justify-end space-x-3">
+                  <button type="button" id="cancelUserBtn" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none">Cancel</button>
+                  <button type="submit" class="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 focus:outline-none">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Import Management Section -->
+        <section id="import-management" class="tab-content hidden" tabindex="0" aria-label="Import Management section">
+          <h2 class="text-2xl font-semibold mb-4">Import Management</h2>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow max-w-4xl">
+            
+            <!-- Step Wizard Navigation -->
+            <nav class="flex items-center space-x-6 mb-8" aria-label="Progress">
+              <button type="button" class="step-btn bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-semibold focus:outline-none" data-step="1" aria-current="step">1</button>
+              <span class="text-gray-500 dark:text-gray-400">Import File</span>
+              <button type="button" class="step-btn bg-gray-300 dark:bg-gray-700 dark:text-gray-400 rounded-full w-8 h-8 flex items-center justify-center font-semibold focus:outline-none" data-step="2" disabled>2</button>
+              <span class="text-gray-400 dark:text-gray-500">Column Mapping</span>
+              <button type="button" class="step-btn bg-gray-300 dark:bg-gray-700 dark:text-gray-400 rounded-full w-8 h-8 flex items-center justify-center font-semibold focus:outline-none" data-step="3" disabled>3</button>
+              <span class="text-gray-400 dark:text-gray-500">Import Logs</span>
+            </nav>
+
+            <!-- Step 1: Import File -->
+            <div id="step1" class="import-step">
+              <h3 class="text-lg font-semibold mb-2">Import File</h3>
+              <div id="dropZone" class="border-4 border-dashed border-cyan-400 rounded-lg p-12 text-center cursor-pointer text-gray-600 dark:text-gray-400" tabindex="0" role="button" aria-label="Drag and drop a spreadsheet file or browse files">
+                Drag and drop a spreadsheet (.csv, .xlsx) or <button id="browseFilesBtn" class="text-cyan-600 underline" type="button">browse files</button>.
+                <input type="file" id="fileInput" accept=".csv,.xlsx" class="hidden" aria-label="Select spreadsheet file" />
+              </div>
+              <p id="importFileName" class="mt-2 text-cyan-600 font-medium" aria-live="polite"></p>
+              <div class="mt-6">
+                <button type="button" id="step1NextBtn" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 focus:outline-none disabled:opacity-50" disabled>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 2: Column Mapping -->
+            <form id="step2" class="import-step hidden" aria-label="Column mapping form">
+              <h3 class="text-lg font-semibold mb-2">Column Mapping</h3>
+              <p class="mb-4 text-gray-500 dark:text-gray-400">Map file columns to database fields.</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+                <label class="block">
+                  Date:
+                  <select name="dateField" id="dateField" class="w-full mt-1 px-3 py-2 border rounded focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-required="true">
+                    <!-- options dynamically filled -->
+                  </select>
+                </label>
+                <label class="block">
+                  Category:
+                  <select name="categoryField" id="categoryField" class="w-full mt-1 px-3 py-2 border rounded focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-required="true">
+                    <!-- options dynamically filled -->
+                  </select>
+                </label>
+                <label class="block">
+                  Amount:
+                  <select name="amountField" id="amountField" class="w-full mt-1 px-3 py-2 border rounded focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-required="true">
+                    <!-- options dynamically filled -->
+                  </select>
+                </label>
+              </div>
+              <div class="mt-6 flex justify-between max-w-xl">
+                <button type="button" id="step2BackBtn" class="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">Back</button>
+                <button type="submit" class="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 focus:outline-none">Validate & Import</button>
+              </div>
+            </form>
+
+            <!-- Step 3: Import Logs -->
+            <div id="step3" class="import-step hidden" tabindex="0" aria-label="Import logs">
+              <h3 class="text-lg font-semibold mb-2">Import Logs</h3>
+              <div class="overflow-x-auto rounded-lg border bg-white dark:bg-gray-800 dark:border-gray-700 shadow">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                  <thead class="bg-gray-50 dark:bg-gray-900">
+                    <tr>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">File Name</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Date</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Result</th>
+                      <th class="px-6 py-3 text-center font-medium uppercase text-gray-500 dark:text-gray-300">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="importLogsTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">sales_june.csv</td>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-20</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-green-600 font-bold">Success</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <button class="text-cyan-600 underline text-sm details-btn" aria-label="View details for sales_june.csv">View</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">inventory_may.xlsx</td>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-18</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-red-600 font-bold">Error</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <button class="text-cyan-600 underline text-sm details-btn" aria-label="View details for inventory_may.xlsx">View</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+              <div class="mt-6">
+                <button type="button" id="step3BackBtn" class="px-4 py-2 border rounded border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">Back</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Backup & Restore Section -->
+        <section id="backup-restore" class="tab-content hidden" tabindex="0" aria-label="Backup and Restore section">
+          <h2 class="text-2xl font-semibold mb-4">Backup & Restore</h2>
+          <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-3xl space-y-6">
+            <button id="manualBackupBtn" class="bg-cyan-600 text-white rounded px-4 py-2 hover:bg-cyan-700 focus:outline-none">
+              Manual Backup
+            </button>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">List of Backups</h3>
+              <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                  <thead class="bg-gray-50 dark:bg-gray-900">
+                    <tr>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Timestamp</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">File Size</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="backupList" class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-20 10:15</td>
+                      <td class="px-6 py-4 whitespace-nowrap">12.5 MB</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-green-600 font-bold">Success</td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-13 09:00</td>
+                      <td class="px-6 py-4 whitespace-nowrap">12.3 MB</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-green-600 font-bold">Success</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Schedule Backup</h3>
+              <label for="backupInterval" class="block mb-1 text-gray-700 dark:text-gray-300">Backup Interval</label>
+              <select id="backupInterval" class="px-3 py-2 border rounded w-full max-w-xs focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+                <option>Daily</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
+              </select>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Restore from Backup</h3>
+              <select id="restoreSelect" class="px-3 py-2 border rounded w-full max-w-xs focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 mb-2" aria-label="Select backup version">
+                <option value="">Select a backup version</option>
+                <option value="2024-06-20 10:15">2024-06-20 10:15</option>
+                <option value="2024-06-13 09:00">2024-06-13 09:00</option>
+              </select>
+              <button id="restoreBtn" class="bg-red-600 text-white rounded px-4 py-2 hover:bg-red-700 focus:outline-none">Restore</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- System Settings Section -->
+        <section id="system-settings" class="tab-content hidden" tabindex="0" aria-label="System Settings section">
+          <h2 class="text-2xl font-semibold mb-4">System Settings</h2>
+          <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-3xl space-y-6">
+
+            <div class="flex items-center justify-between">
+              <label for="maintenanceMode" class="font-semibold text-gray-700 dark:text-gray-300 tooltip">
+                Maintenance Mode
+                <span class="tooltiptext">Toggle system maintenance mode to temporarily disable the system.</span>
+              </label>
+              <input type="checkbox" id="maintenanceMode" class="w-11 h-6 rounded-full bg-gray-200 dark:bg-gray-700 appearance-none cursor-pointer relative shadow-inner after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all checked:bg-cyan-600 checked:after:translate-x-full checked:after:border-cyan-600" />
+            </div>
+
+            <div class="flex items-center justify-between">
+              <label for="enable2FA" class="font-semibold text-gray-700 dark:text-gray-300 tooltip">
+                Enable 2FA for Users
+                <span class="tooltiptext">Require users to use two-factor authentication.</span>
+              </label>
+              <input type="checkbox" id="enable2FA" class="w-11 h-6 rounded-full bg-gray-200 dark:bg-gray-700 appearance-none cursor-pointer relative shadow-inner after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all checked:bg-cyan-600 checked:after:translate-x-full checked:after:border-cyan-600" />
+            </div>
+            
+            <div>
+              <label for="maxUploadSize" class="block mb-1 font-semibold text-gray-700 dark:text-gray-300 tooltip">
+                Max Upload File Size (MB)
+                <span class="tooltiptext">Maximum size allowed for uploaded spreadsheet files</span>
+              </label>
+              <input type="number" id="maxUploadSize" min="1" max="100" value="20" class="w-32 px-3 py-2 border rounded focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" />
+            </div>
+
+            <fieldset class="space-y-4">
+              <legend class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Alert Settings</legend>
+              <div><input type="checkbox" id="alertImportFailures" class="mr-2" checked /><label for="alertImportFailures">Import Failures</label></div>
+              <div><input type="checkbox" id="alertHighForecastError" class="mr-2" checked /><label for="alertHighForecastError">High Forecast Error</label></div>
+              <div><input type="checkbox" id="alertBackupFailures" class="mr-2" /><label for="alertBackupFailures">Backup Failures</label></div>
+            </fieldset>
+          </div>
+        </section>
+
+        <!-- Logs & Security Section -->
+        <section id="logs-security" class="tab-content hidden" tabindex="0" aria-label="Logs and Security section">
+          <h2 class="text-2xl font-semibold mb-4">Logs & Security</h2>
+          <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-5xl space-y-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Login Activity Log</h3>
+              <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow max-h-80">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                  <thead class="bg-gray-50 dark:bg-gray-900">
+                    <tr>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">User</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">IP Address</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Date/Time</th>
+                      <th class="px-6 py-3 text-left font-medium uppercase text-gray-500 dark:text-gray-300">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">admin</td>
+                      <td class="px-6 py-4 whitespace-nowrap">192.168.1.10</td>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-20 08:30</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-green-600 font-bold">Success</td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">staff1</td>
+                      <td class="px-6 py-4 whitespace-nowrap">192.168.1.15</td>
+                      <td class="px-6 py-4 whitespace-nowrap">2024-06-19 20:55</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-red-600 font-bold">Fail</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Change Logs</h3>
+              <div class="log-scroll overflow-y-auto border border-gray-300 dark:border-gray-700 rounded p-3 bg-gray-50 dark:bg-gray-900">
+                <div class="space-y-2" id="changeLogsAccordion">
+                  <!-- Accordion items added by script -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ML Model Control Section -->
+        <section id="ml-model-control" class="tab-content hidden" tabindex="0" aria-label="ML Model Control section">
+          <h2 class="text-2xl font-semibold mb-4">ML Model Control</h2>
+          <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-3xl space-y-6">
+            
+            <div>
+              <label for="modelUpload" class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Upload New Model (.pkl or .h5)</label>
+              <input type="file" id="modelUpload" accept=".pkl,.h5" class="block w-full text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:ring-cyan-400 focus:outline-none dark:bg-gray-700 dark:text-gray-100" aria-describedby="modelUploadHelp" />
+              <p id="modelUploadHelp" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Supported formats: .pkl, .h5 (Max size: 20MB)</p>
+            </div>
+
+            <div>
+              <label for="testModelInput" class="block text-gray-700 dark:text-gray-300 font-semibold mb-2">Test Model with Sample Data (JSON)</label>
+              <textarea id="testModelInput" rows="6" placeholder='{"feature1": 123, "feature2": "abc"}' class="w-full p-3 border rounded focus:ring-cyan-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 font-mono" aria-describedby="testModelHelp"></textarea>
+              <p id="testModelHelp" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Enter JSON formatted sample data to test the model.</p>
+            </div>
+
+            <button id="testModelBtn" class="bg-cyan-600 text-white px-6 py-2 rounded hover:bg-cyan-700 focus:outline-none" aria-label="Test ML Model">Test Model</button>
+
+            <div id="modelEvaluation" class="mt-6 bg-gray-100 dark:bg-gray-900 rounded p-6 border border-cyan-500 hidden" aria-live="polite" tabindex="0">
+              <h3 class="text-lg font-semibold mb-4">Evaluation Metrics</h3>
+              <p id="evalAccuracy" class="mb-2 text-lg">Accuracy: <strong>--</strong></p>
+              <p id="evalRMSE" class="text-lg">RMSE: <strong>--</strong></p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Setup icons
+    feather.replace();
+
+    // Sidebar toggle for mobile
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarOpenBtn = document.getElementById('sidebar-open');
+    const sidebarCloseBtn = document.getElementById('sidebar-close');
+    sidebarOpenBtn.addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+      sidebarOverlay.classList.remove('hidden');
+    });
+    sidebarCloseBtn.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      sidebarOverlay.classList.add('hidden');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      sidebarOverlay.classList.add('hidden');
+    });
+
+    // Navigation tabs
+    const navLinks = document.querySelectorAll('.nav-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    function setActiveTab(tab) {
+      tabContents.forEach(section => {
+        if (section.id === tab) {
+          section.classList.remove('hidden');
+          section.focus();
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+      navLinks.forEach(link => {
+        if (link.dataset.tab === tab) {
+          link.classList.add('bg-cyan-500');
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.classList.remove('bg-cyan-500');
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const tab = link.dataset.tab;
+        setActiveTab(tab);
+        // For mobile, close sidebar when nav clicked
+        if (window.innerWidth < 768) {
+          sidebar.classList.add('-translate-x-full');
+          sidebarOverlay.classList.add('hidden');
+        }
+      });
+    });
+
+    // Default active tab
+    setActiveTab('dashboard');
+
+    // Global search navigation filter (sidebar links)
+    const globalSearch = document.getElementById('globalSearch');
+    globalSearch.addEventListener('input', () => {
+      const val = globalSearch.value.toLowerCase();
+      navLinks.forEach(link => {
+        const text = link.textContent.toLowerCase();
+        if (text.includes(val)) {
+          link.style.display = 'flex';
+        } else {
+          link.style.display = 'none';
+        }
+      });
+    });
+
+    // Dark mode toggle - remembers preference in localStorage
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    function setDarkMode(enabled) {
+      if (enabled) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+    darkModeToggle.addEventListener('change', () => {
+      setDarkMode(darkModeToggle.checked);
+    });
+    // Init dark mode from preference
+    const darkPref = localStorage.getItem('darkMode');
+    if (darkPref === 'true') {
+      darkModeToggle.checked = true;
+      setDarkMode(true);
+    } else {
+      darkModeToggle.checked = false;
+      setDarkMode(false);
+    }
+
+    // DASHBOARD: Chart.js line chart for Forecast Accuracy Over Time
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    const forecastChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Forecast Accuracy',
+          data: [85, 87, 88, 86, 89, 90, 87],
+          borderColor: '#00bcd4',
+          backgroundColor: 'rgba(0, 188, 212, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {min: 75, max: 100, ticks: {stepSize: 5}},
+          x: {grid: {display: false}}
+        },
+        plugins: {
+          legend: {display: true, position: 'top'},
+          tooltip: {mode: 'index', intersect: false}
+        },
+      }
+    });
+
+    // USER MANAGEMENT: Modal control
+    const userModal = document.getElementById('userModal');
+    const addUserBtn = document.getElementById('addUserBtn');
+    const cancelUserBtn = document.getElementById('cancelUserBtn');
+    const userForm = document.getElementById('userForm');
+    const userTableBody = document.getElementById('userTableBody');
+
+    addUserBtn.addEventListener('click', () => {
+      userModal.classList.remove('hidden');
+      userForm.reset();
+      userForm.dataset.editing = 'false';
+      userForm.querySelector('h3').textContent = 'Add User';
+    });
+    cancelUserBtn.addEventListener('click', () => {
+      userModal.classList.add('hidden');
+    });
+
+    // Add user form submit simulation
+    userForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const formData = new FormData(userForm);
+      const newName = formData.get('name');
+      const newEmail = formData.get('email');
+      const newRole = formData.get('role');
+      const newStatus = 'Active';
+      // Simple simulation just adds to table
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="px-6 py-4 whitespace-nowrap">${newName}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${newEmail}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${newRole}</td>
+        <td class="px-6 py-4 whitespace-nowrap">${newStatus}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-center space-x-2">
+          <button aria-label="Edit ${newName}" class="text-cyan-600 hover:text-cyan-800 focus:outline-none"><i data-feather="edit" class="w-5 h-5 inline"></i></button>
+          <button aria-label="Delete ${newName}" class="text-red-600 hover:text-red-800 focus:outline-none"><i data-feather="trash-2" class="w-5 h-5 inline"></i></button>
+        </td>
+      `;
+      userTableBody.appendChild(tr);
+      feather.replace();
+      userModal.classList.add('hidden');
+    });
+
+    // IMPORT MANAGEMENT: Step by step wizard logic
+    const stepBtns = document.querySelectorAll('.step-btn');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step1NextBtn = document.getElementById('step1NextBtn');
+    const step2BackBtn = document.getElementById('step2BackBtn');
+    const step3BackBtn = document.getElementById('step3BackBtn');
+    const fileInput = document.getElementById('fileInput');
+    const importFileName = document.getElementById('importFileName');
+    const dateField = document.getElementById('dateField');
+    const categoryField = document.getElementById('categoryField');
+    const amountField = document.getElementById('amountField');
+    let fileSelected = false;
+
+    function updateStepButtons(currentStep) {
+      stepBtns.forEach(btn => {
+        if (parseInt(btn.dataset.step) === currentStep) {
+          btn.classList.replace('bg-gray-300', 'bg-cyan-600');
+          btn.classList.replace('dark:text-gray-400', 'text-white');
+          btn.setAttribute('aria-current', 'step');
+          btn.disabled = false;
+        } else {
+          btn.classList.replace('bg-cyan-600', 'bg-gray-300');
+          btn.classList.replace('text-white', 'dark:text-gray-400');
+          btn.removeAttribute('aria-current');
+          btn.disabled = true;
+        }
+      });
+    }
+
+    stepBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.dataset.step);
+        if (step === 1) showStep1();
+        if (step === 2 && fileSelected) showStep2();
+        if (step === 3) showStep3();
+      });
+    });
+
+    function showStep1() {
+      step1.classList.remove('hidden');
+      step2.classList.add('hidden');
+      step3.classList.add('hidden');
+      updateStepButtons(1);
+      step1NextBtn.disabled = !fileSelected;
+    }
+    function showStep2() {
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      step3.classList.add('hidden');
+      updateStepButtons(2);
+    }
+    function showStep3() {
+      step1.classList.add('hidden');
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+      updateStepButtons(3);
+      step3.focus();
+    }
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        fileSelected = true;
+        importFileName.textContent = `Selected file: ${fileInput.files[0].name}`;
+        step1NextBtn.disabled = false;
+        populateMappingSelects(['Date', 'Category', 'Amount', 'Extra']);
+      } else {
+        fileSelected = false;
+        importFileName.textContent = '';
+        step1NextBtn.disabled = true;
+      }
+    });
+
+    step1NextBtn.addEventListener('click', () => {
+      if (fileSelected) showStep2();
+    });
+    step2BackBtn.addEventListener('click', () => showStep1());
+    step3BackBtn.addEventListener('click', () => showStep2());
+
+    // Populating selects
+    function populateMappingSelects(options) {
+      [dateField, categoryField, amountField].forEach(select => {
+        select.innerHTML = '';
+        options.forEach(opt => {
+          const option = document.createElement('option');
+          option.value = opt;
+          option.textContent = opt;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    // Validate & Import form
+    const step2Form = document.getElementById('step2');
+    step2Form.addEventListener('submit', e => {
+      e.preventDefault();
+      showStep3();
+    });
+
+    // BACKUP & RESTORE: Button simulation
+    const manualBackupBtn = document.getElementById('manualBackupBtn');
+    manualBackupBtn.addEventListener('click', () => {
+      alert('Manual backup triggered!');
+    });
+    const restoreBtn = document.getElementById('restoreBtn');
+    restoreBtn.addEventListener('click', () => {
+      const selected = document.getElementById('restoreSelect').value;
+      if (!selected) {
+        alert('Please select a backup version to restore.');
+      } else {
+        alert(`Restoring backup version: ${selected}`);
+      }
+    });
+
+    // LOGS & SECURITY: Accordion for change logs
+    function AccordionItem({title, date, details}) {
+      const container = document.createElement('div');
+      container.className = 'border rounded-md';
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'w-full flex justify-between items-center px-4 py-2 text-left font-semibold bg-gray-200 dark:bg-gray-700 dark:text-gray-200 rounded-t-md focus:outline-none';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = title;
+
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'text-sm text-gray-500 dark:text-gray-400 ml-4';
+      dateSpan.textContent = date;
+      btn.appendChild(dateSpan);
+
+      const content = document.createElement('div');
+      content.className = 'hidden px-4 py-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-b-md';
+
+      const p = document.createElement('p');
+      p.textContent = details || '';
+      content.appendChild(p);
+
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        content.classList.toggle('hidden');
+      });
+
+      container.appendChild(btn);
+      container.appendChild(content);
+      return container;
+    }
+
+    const accordionContainer = document.getElementById('changeLogsAccordion');
+    [
+      {title: "Changed user role of Bob Smith", date: "2024-06-20 09:00", details: "Admin changed role from Staff to Business Owner."},
+      {title: "Updated system settings", date: "2024-06-19 18:20", details: "Enabled Maintenance Mode and Email Alerts for Import Failures."},
+      {title: "Imported new sales data", date: "2024-06-19 12:45", details: "Imported spreadsheet sales_june.csv with 1000 rows."}
+    ].forEach(log => {
+      const item = AccordionItem(log);
+      accordionContainer.appendChild(item);
+    });
+
+    // ML MODEL CONTROL: Test model button simulation
+    const testModelBtn = document.getElementById('testModelBtn');
+    const modelEvalDiv = document.getElementById('modelEvaluation');
+    const evalAccuracy = document.getElementById('evalAccuracy');
+    const evalRMSE = document.getElementById('evalRMSE');
+    testModelBtn.addEventListener('click', () => {
+      // Simulate model evaluation results
+      modelEvalDiv.classList.remove('hidden');
+      evalAccuracy.innerHTML = 'Accuracy: <strong>89.7%</strong>';
+      evalRMSE.innerHTML = 'RMSE: <strong>0.123</strong>';
+      modelEvalDiv.focus();
+    });
+
+    // Logout button simulation
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', () => {
+      alert('Logging out...');
+    });
+  </script>
+</body>
+</html>
