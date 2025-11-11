@@ -1,1 +1,89 @@
+THIS IS FOR THE MAIN LINE AREA CHART
+<div class="detailed-analytics">
+            <section class="chart-panel">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <h3>Inventory Expenses Forecast</h3>
+                        <p class="chart-sub">Daily predicted inventory expense per category</p>
+                    </div>
+                    <div class="chart-controls">
+                        <label class="select-wrap">
+                            <select id="timeframe-select" aria-label="Timeframe">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Months</option>
+                                <option value="quarters">4 Quarters</option>
+                            </select>
+                        </label>
+                        <label class="select-wrap">
+                            <select id="category-select" aria-label="Category">
+                                <option value="all">All categories</option>
+                                <option value="frozen">Frozen Goods</option>
+                                <option value="snacks">Snacks</option>
+                                <option value="canned">Canned Goods</option>
+                                <option value="toiletries">Toiletries</option>
+                                <option value="condiments">Condiments</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
 
+                <div class="chart-body">
+                    <canvas id="inventory-chart" role="img" aria-label="Area line chart showing inventory expense forecast"></canvas>
+                </div>
+            </section>
+
+            <aside class="smart-insight">
+                <h4>Smart Insight</h4>
+                <p class="insight-summary">Automated observations based on forecasted inventory expenses</p>
+                <div class="insight-cards">
+                    <div class="insight-card high">
+                        <div class="insight-meta">
+                            <div class="insight-label">High</div>
+                            <div class="insight-value">Php 8,420</div>
+                        </div>
+                        <div class="insight-actions">
+                            <button class="insight-btn pin" data-action="pin">Pin</button>
+                            <button class="insight-btn resolve" data-action="resolve">Resolve</button>
+                            <button class="insight-btn comment" data-action="comment">Comment</button>
+                        </div>
+                    </div>
+
+                    <div class="insight-card medium">
+                        <div class="insight-meta">
+                            <div class="insight-label">Medium</div>
+                            <div class="insight-value">Php 3,210</div>
+                        </div>
+                        <div class="insight-actions">
+                            <button class="insight-btn pin" data-action="pin">Pin</button>
+                            <button class="insight-btn resolve" data-action="resolve">Resolve</button>
+                            <button class="insight-btn comment" data-action="comment">Comment</button>
+                        </div>
+                    </div>
+
+                    <div class="insight-card low">
+                        <div class="insight-meta">
+                            <div class="insight-label">Low</div>
+                            <div class="insight-value">Php 1,170</div>
+                        </div>
+                        <div class="insight-actions">
+                            <button class="insight-btn pin" data-action="pin">Pin</button>
+                            <button class="insight-btn resolve" data-action="resolve">Resolve</button>
+                            <button class="insight-btn comment" data-action="comment">Comment</button>
+                        </div>
+                    </div>
+
+                    <div class="insight-card neutral">
+                        <div class="insight-meta">
+                            <div class="insight-label">Stable</div>
+                            <div class="insight-value">Php 980</div>
+                        </div>
+                        <div class="insight-actions">
+                            <button class="insight-btn pin" data-action="pin">Pin</button>
+                            <button class="insight-btn resolve" data-action="resolve">Resolve</button>
+                            <button class="insight-btn comment" data-action="comment">Comment</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
