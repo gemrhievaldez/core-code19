@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartForecast Help Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="Help.css">
+    <link rel="stylesheet" href="Inventory_expense_style.css">
+    <script src="inventory_expense_chart.js"></script>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <script src="Help.js" defer></script>
+</head>
+<body>
+ <!--navbar-->
+ <nav class="navbar modern-navbar">
+    <div class="navbar-section navbar-section--left">
+      <div class="brand-group">
+        <span class="brand-icon">
+          <i class="iconsax" type="bold" icon="wallet-search"></i>
+        </span>
+        <span class="brand-title">Smartforecast Help Center</span>
+      </div>
+      <span class="brand-desc">Monitoring April 2025 plan and actual spending in one glance</span>
+    </div>
+    <div class="navbar-section navbar-section--center">
+      <div class="date-picker smart-date-picker">
+        <label for="dashboard-date-range" class="visually-hidden">Date Range</label>
+        <select id="dashboard-date-range" aria-label="Date range">
+          <option>April 1 – April 30, 2025</option>
+          <option>May 1 – May 31, 2025</option>
+          <option>June 1 – June 30, 2025</option>
+          <option>July 1 – July 31, 2025</option>
+        </select>
+        <i class="iconsax calendar-icon" type="bold" icon="calendar-1"></i>
+      </div>
+      <button class="rerun-btn modern-rerun-btn">
+        <i class="iconsax" type="bold" icon="refresh-circle"></i>
+        <span>Re-run Prediction</span>
+      </button>
+    </div>
+    <div class="navbar-section navbar-section--right">
+      <button class="navbar-icon-btn notification modern-notification" aria-label="Notifications">
+        <i class="iconsax" type="bold" icon="notification"></i>
+      </button>
+      <div class="divider-vertical"></div>
+      <div class="profile modern-profile" title="Account">
+        <img src="https://i.pravatar.cc/40" alt="Profile">
+      </div>
+    </div>
+  </nav>
+<div class="help-container">
+    <div class="header-actions">
+        <div class="search-wrapper">
+            <i class="iconsax" type="linear" stroke-width="1.5" icon="search-2"></i>
+            <input type="text" class="search-input" placeholder="Search guides, FAQs, and documentation..." id="searchInput">
+        </div>
+        <button class="contact-btn" id="openModal">
+            Contact Support
+        </button>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="guides">Guides</div>
+        <div class="tab" data-tab="faq">FAQ</div>
+    </div>
+
+    <!-- GUIDES TAB -->
+    <div id="guides-tab">
+        <div class="guide-group">
+            <div class="guide-title"><i class="fas fa-rocket"></i> Getting Started</div>
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-circle-info"></i> Overview of SmartForecast features</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">SmartForecast helps you track expenses, predict future spending, and stay within budget using smart automation and machine learning.</div>
+
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-user-shield"></i> Roles allowed (Admin, Business Owner, Staff)</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">• <strong>Admin</strong>: Full control<br>• <strong>Business Owner</strong>: Manage budgets & reports<br>• <strong>Staff</strong>: View-only access<br><br>Secured with <strong>Role-Based Access Control (RBAC)</strong>.</div>
+
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-book-open"></i> Open Full Tutorial</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content"><a href="#" style="color:var(--primary);font-weight:600;">Open Complete SmartForecast Tutorial</a></div>
+        </div>
+
+        <div class="guide-group">
+            <div class="guide-title"><i class="fas fa-file-excel"></i> Importing Expense Data (Excel/CSV)</div>
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-upload"></i> Step-by-step import guide</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">
+                <ul style="margin:16px 0; padding-left:20px;">
+                    <li>Go to Import → Choose your Excel/CSV file</li>
+                    <li>System validates format automatically</li>
+                    <li>Map columns: <strong>Date, Category, Amount, Description, Supplier</strong></li>
+                </ul>
+                Need a template? <a href="#" style="color:var(--primary);font-weight:600;">Download Sample Template</a>
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <div class="guide-title"><i class="fas fa-chart-line"></i> Expense Prediction & Dashboard</div>
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-brain"></i> How predictions work</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">
+                We use <strong>Machine Learning (Multiple Linear Regression)</strong> to forecast your next month’s expenses.<br><br>
+                You'll see monthly totals, category highlights, and smart saving suggestions.
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <div class="guide-title"><i class="fas fa-wallet"></i> Budgeting & Alerts</div>
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-sliders"></i> How to set budgets and get alerts</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">
+                Set monthly limits per category.<br><br>
+                • <strong>Under-Spending</strong>: You're saving!<br>
+                • <strong>Over-Spending</strong>: Time to review<br><br>
+                Get <strong>Smart Alerts</strong> when nearing your limit.
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <div class="guide-title"><i class="fas fa-toolbox"></i> Admin Tools</div>
+            <div class="guide-item"><div class="guide-item-text"><i class="fas fa-shield-alt"></i> Security, backups, and user management</div><i class="fas fa-chevron-down chevron"></i></div>
+            <div class="guide-content">
+                <ul style="margin:16px 0; padding-left:20px;">
+                    <li>Backup & Restore data</li>
+                    <li>View Import Logs</li>
+                    <li>Manage Users & Roles</li>
+                    <li>Configure Security Settings (RBAC)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ TAB -->
+    <div id="faq-tab">
+        <div class="faq-grid">
+            <div class="faq-card">
+                <div class="faq-question">How accurate are the forecasts?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Forecasts are typically <strong>85–95% accurate</strong> for the next 3 months. Accuracy decreases for longer periods due to external factors.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-question">Can I import data from my accounting software?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes! We support direct integrations with <strong>QuickBooks, Xero, and FreshBooks</strong>. Check the Integrations tab.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-question">What happens if I exceed my budget?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">You’ll receive an alert, but no actions are blocked. It’s just a warning to help you manage spending.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-question">Is my data encrypted?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes, all data is encrypted both in transit (SSL/TLS) and at rest (AES-256). We comply with SOC 2 standards.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-question">Can I export reports?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes, export reports as PDF or CSV from any dashboard page. Use the “Export” button in the top right.</div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-question">What is the maximum file size for imports?<i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">You can import files up to <strong>100MB</strong>. For larger datasets, please contact support.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal" id="contactModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Contact Support</h2>
+            <button class="close-btn" id="closeModal">×</button>
+        </div>
+        <form id="contactForm">
+            <div class="form-group"><label>Name</label>
+                <input type="text" required></div>
+            <div class="form-group"><label>User Role</label>
+                <select required>
+                    <option>Admin</option>
+                    <option>Business Owner</option>
+                    <option>Staff</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Issue Category</label>
+                <select required>
+                    <option>Import Issue</option>
+                    <option>Prediction Error</option>
+                    <option>Budget Alert</option>
+                    <option>Account/Login</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea required placeholder="Describe your issue...">
+                </textarea>
+            </div>
+            <div class="form-group">
+                <label>Attach File (optional)</label>
+                <input type="file">
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+</div>
+<!--sidebar-->    
+<aside class="sidebar">
+    <!--Sidebar Header -->
+    <header class ="sidebar-header">
+        <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+            <button class="sidebar-toggle">
+                <i class="iconsax" type="bold" icon="grid-4"></i>
+            </button>
+    </header>
+    <div class ="sidebar-content">
+        <!--search form -->
+        <form action="#" class="search-form">
+            <span class="search-icon">
+                <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+            </span>
+            <input type="search" placeholder="Search..." required />
+        </form>
+    <div class="menu-section-title">
+        <p>Main Navigation</p>
+    </div>
+        <!-- Menu list-->
+        <ul class="menu-list">
+            <li class="menu item">
+                <a href="Inventory_expense_analytics.html" class="menu-link active">
+                    <i class="iconsax" type="bold" icon="element-4"></i>
+                    <span class="menu-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Expense_tracking.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="receipt-search"></i>
+                    <span class="menu-label">Expense Tracking</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Budget_monitoring.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="wallet-search"></i>
+                    <span class="menu-label">Budget Monitoring</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Analytics.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="bar-chart-square-2"></i>
+                    <span class="menu-label">Analytics</span>
+                </a>
+            </li>
+        </ul>
+    <div class="menu-section-title">
+        <p>Support Settings</p>
+    </div>
+        <ul class="menu-list">
+            <li class="menu item">
+                <a href="Settings.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="setting-1"></i>
+                    <span class="menu-label">Settings</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Help.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="message-question"></i>
+                    <span class="menu-label">Help</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--sidefooter-->
+    <div class="side-footer">
+        <button class ="logout-btn">
+            <div class ="logout-icon"></div>
+            <i class="iconsax" type="bold" icon="logout-1"></i>
+            <span class="logout-text">Logout</span>
+        </button>
+    </div>
+</aside>
+<script src="sidebar.js"></script>
+</body>
+</html>

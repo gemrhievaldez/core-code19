@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Expense tracking Dashboard</title>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <link rel="stylesheet" href="Inventory_expense_style.css">
+    <link rel="stylesheet" href="Expense_tracking.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="Expense_tracking.js" defer></script>
+    <script src="inventory_expense_chart.js" defer></script>
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar modern-navbar">
+      <div class="navbar-section navbar-section--left">
+        <div class="brand-group">
+          <span class="brand-icon">
+            <i class="iconsax" type="bold" icon="exchange-card-money"></i>
+          </span>
+          <span class="brand-title">Expense Tracking</span>
+        </div>
+        <span class="brand-desc">Track all inventory purchase expenses from spreadsheet import.</span>
+      </div>
+      <div class="navbar-section navbar-section--center">
+        <div class="date-picker smart-date-picker">
+          <label for="dashboard-date-range" class="visually-hidden">Date Range</label>
+          <select id="dashboard-date-range" aria-label="Date range">
+            <option>April 1 – April 30, 2025</option>
+            <option>May 1 – May 31, 2025</option>
+            <option>June 1 – June 30, 2025</option>
+            <option>July 1 – July 31, 2025</option>
+          </select>
+          <i class="iconsax calendar-icon" type="bold" icon="calendar-1"></i>
+        </div>
+        <button class="rerun-btn modern-rerun-btn">
+          <i class="iconsax" type="bold" icon="refresh-circle"></i>
+          <span>Re-run Prediction</span>
+        </button>
+      </div>
+      <div class="navbar-section navbar-section--right">
+        <button class="navbar-icon-btn notification modern-notification" aria-label="Notifications">
+          <i class="iconsax" type="bold" icon="notification"></i>
+        </button>
+        <div class="divider-vertical"></div>
+        <div class="profile modern-profile" title="Account">
+          <img src="https://i.pravatar.cc/40" alt="Profile">
+        </div>
+      </div>
+    </nav>
+  <!--main-->
+    <main>
+    <!-- Expense Tracking Upload, Preview, Charts Section -->
+    <div class="container">
+  <!-- Header: Import + Filters -->
+  <div class="header-section">
+    <div class="import-box section-card">
+      <div class="section-title">
+        <span class="section-icon">
+          <i class="iconsax" type="bold" icon="clipboard-import"></i>
+        </span>
+        <div>
+          <div class="section-eyebrow">Spreadsheet Import</div>
+          <h3>Upload Latest Expenses</h3>
+        </div>
+      </div>
+      <p style="color: #475569;">Drag & drop your spreadsheet or use the actions below.</p>
+      <div class="import-cta">
+        <div style="padding: 14px; border-radius: 14px; border: 1px dashed rgba(99,102,241,0.4); background: rgba(99,102,241,0.05);">
+          <p style="font-size: 13px; color: #6366f1; font-weight: 600;">Supports: XLSX, CSV, Google Sheets</p>
+          <p style="font-size: 12px; color: #94a3b8;">Max 10 MB · Auto validation enabled</p>
+        </div>
+        <div class="import-actions">
+          <button class="upload-btn">
+            <i class="iconsax" type="bold" icon="document-upload"></i>
+            Import Spreadsheet
+          </button>
+          <button class="template-btn">
+            <i class="iconsax" type="bold" icon="document-download"></i>
+            Download Template
+          </button>
+        </div>
+      </div>
+      <div style="margin-top: auto; font-size: 12px; color: #94a3b8;">
+        Last import • May 28, 2025 · 10:45 PM · Admin
+      </div>
+    </div>
+
+    <div class="filter-section section-card">
+      <div class="section-title">
+        <span class="section-icon">
+          <i class="iconsax" type="bold" icon="filter"></i>
+        </span>
+        <div>
+          <div class="section-eyebrow">Smart Filters</div>
+          <h3>Apply Custom Expense Views</h3>
+        </div>
+      </div>
+      <p class="filter-hint">Use the filters below to narrow down to the timeframe and category you need.</p>
+      <div class="filter-grid">
+        <div>
+          <label>From</label>
+          <input type="date" value="2025-04-01" />
+        </div>
+        <div>
+          <label>To</label>
+          <input type="date" value="2025-04-30" />
+        </div>
+        <div>
+          <label>Category</label>
+          <select>
+            <option>All Categories</option>
+            <option>Beverages</option>
+            <option>Snacks</option>
+            <option>Canned Goods</option>
+            <option>Frozen Goods</option>
+            <option>Condiments</option>
+            <option>Toiletries</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="filter-buttons">
+          <button class="btn btn-outline">Reset Filters</button>
+          <button class="btn btn-primary">Apply Filters</button>
+        </div>
+        <button class="btn btn-export">
+          <i class="iconsax" type="bold" icon="clipboard-export"></i> Export (Excel / PDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expense Table -->
+  <div class="table-container section-card table-card">
+    <div class="table-header">
+      <div class="table-title">
+        <span class="section-icon">
+          <i class="iconsax" type="bold" icon="grid-1"></i>
+        </span>
+        <div>
+          <div class="section-eyebrow">Expense Preview</div>
+          <h3>Latest Imported Transactions</h3>
+        </div>
+      </div>
+      <div class="preview-meta">
+        Showing <strong>6</strong> of <strong>48</strong> rows<br>
+        Updated: April 30, 2025 · 2:10 PM
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>DATE</th>
+            <th>PRODUCT NAME</th>
+            <th>CATEGORY</th>
+            <th>QUANTITY</th>
+            <th>UNIT PRICE</th>
+            <th>TOTAL COST</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025-04-10</td>
+            <td>Coca-Cola 500ml</td>
+            <td>Beverages</td>
+            <td>50</td>
+            <td>Php 18.00</td>
+            <td>Php 900.00</td>
+          </tr>
+          <tr>
+            <td>2025-04-09</td>
+            <td>Lucky Me Noodles</td>
+            <td>Snacks</td>
+            <td>100</td>
+            <td>Php 12.00</td>
+            <td>Php 1,200.00</td>
+          </tr>
+          <tr>
+            <td>2025-04-08</td>
+            <td>Magnolia Chicken Whole</td>
+            <td>Frozen Goods</td>
+            <td>10</td>
+            <td>Php 150.00</td>
+            <td>Php 1,500.00</td>
+          </tr>
+          <tr>
+            <td>2025-04-07</td>
+            <td>Century Tuna 155g</td>
+            <td>Canned Goods</td>
+            <td>75</td>
+            <td>Php 32.00</td>
+            <td>Php 2,400.00</td>
+          </tr>
+          <tr>
+            <td>2025-04-06</td>
+            <td>Piattos Cheese 85g</td>
+            <td>Snacks</td>
+            <td>60</td>
+            <td>Php 19.50</td>
+            <td>Php 1,170.00</td>
+          </tr>
+          <tr>
+            <td>2025-04-05</td>
+            <td>Sprite 1L</td>
+            <td>Beverages</td>
+            <td>12</td>
+            <td>Php 48.00</td>
+            <td>Php 2,304.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div>Page 1 of 2</div>
+      <div>
+        <button class="btn btn-outline">Previous</button>
+        <button class="btn btn-primary">Next</button>
+      </div>
+    </div>
+  </div>
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-card section-card">
+      <div class="section-title">
+        <span class="section-icon">
+          <i class="iconsax" type="bold" icon="bar-chart-2"></i>
+        </span>
+        <div>
+          <div class="section-eyebrow">Trend View</div>
+          <h3 class="chart-title">Daily Expenses Overview</h3>
+        </div>
+      </div>
+      <canvas id="lineChart"></canvas>
+    </div>
+
+    <div class="chart-card section-card">
+      <div class="section-title">
+        <span class="section-icon">
+          <i class="iconsax" type="bold" icon="pie-chart"></i>
+        </span>
+        <div>
+          <div class="section-eyebrow">Category Insights</div>
+          <h3 class="chart-title">Expense Distribution by Category</h3>
+        </div>
+      </div>
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+    </main>
+  <!--sidebar-->    
+    <aside class="sidebar">
+        <!--Sidebar Header -->
+        <header class ="sidebar-header">
+            <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+                <button class="sidebar-toggle">
+                  <i class="iconsax" type="bold" icon="grid-4"></i>
+                </button>
+        </header>
+        <div class ="sidebar-content">
+            <!--searh form -->
+            <form action="#" class="search-form">
+                <span class="search-icon">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+                <input type="search" placeholder="Search..." required />
+                </span>
+            </form>
+        <div class="menu-section-title">
+            <p>Main Navigation</p>
+        </div>
+            <!-- Menu list-->
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="Inventory_expense_analytics.html" class="menu-link active">
+                        <i class="iconsax" type="bold" icon="element-4"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Expense_tracking.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="receipt-search"></i>
+                        <span class="menu-label">Expense Tracking</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Budget_monitoring.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="wallet-search"></i>
+                        <span class="menu-label">Budget Monitoring</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Analytics.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="bar-chart-square-2"></i>
+                        <span class="menu-label">Analytics</span>
+                    </a>
+                </li>
+            </ul>
+        <div class="menu-section-title">
+            <p>Support Settings</p>
+        </div>
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="Settings.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="setting-1"></i>
+                        <span class="menu-label">Settings</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Help.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="message-question"></i>
+                        <span class="menu-label">Help</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--sidefooter-->
+        <div class="side-footer">
+            <button class ="logout-btn">
+                <div class ="logout-icon"></div>
+                <i class="iconsax" type="bold" icon="logout-1"></i>
+                <span class="logout-text">Logout</span>
+            </button>
+        </div>
+    </aside>
+    <script src="sidebar.js"></script>
+</body>
+</html>

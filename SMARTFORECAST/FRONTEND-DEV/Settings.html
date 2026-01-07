@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartForecast User Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="Settings.css">
+    <link rel="stylesheet" href="Inventory_expense_style.css">
+    <script src="Settings.js" defer></script>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+</head>
+<body>
+ <!--navbar-->
+ <nav class="navbar modern-navbar">
+    <div class="navbar-section navbar-section--left">
+      <div class="brand-group">
+        <span class="brand-icon">
+          <i class="iconsax" type="bold" icon="wallet-search"></i>
+        </span>
+        <span class="brand-title">Budget Monitoring</span>
+      </div>
+      <span class="brand-desc">Monitoring April 2025 plan and actual spending in one glance</span>
+    </div>
+    <div class="navbar-section navbar-section--center">
+      <div class="date-picker smart-date-picker">
+        <label for="dashboard-date-range" class="visually-hidden">Date Range</label>
+        <select id="dashboard-date-range" aria-label="Date range">
+          <option>April 1 – April 30, 2025</option>
+          <option>May 1 – May 31, 2025</option>
+          <option>June 1 – June 30, 2025</option>
+          <option>July 1 – July 31, 2025</option>
+        </select>
+        <i class="iconsax calendar-icon" type="bold" icon="calendar-1"></i>
+      </div>
+      <button class="rerun-btn modern-rerun-btn">
+        <i class="iconsax" type="bold" icon="refresh-circle"></i>
+        <span>Re-run Prediction</span>
+      </button>
+    </div>
+    <div class="navbar-section navbar-section--right">
+      <button class="navbar-icon-btn notification modern-notification" aria-label="Notifications">
+        <i class="iconsax" type="bold" icon="notification"></i>
+      </button>
+      <div class="divider-vertical"></div>
+      <div class="profile modern-profile" title="Account">
+        <img src="https://i.pravatar.cc/40" alt="Profile">
+      </div>
+    </div>
+  </nav>
+  <!----This is main for the Settings-->
+  <main class="settings-main">
+    <div class="settings-container">
+      <!-- Settings Sidebar -->
+      <aside class="settings-sidebar">
+        <h2 class="settings-title">Settings</h2>
+        <nav class="settings-nav">
+          <button class="settings-nav-item active" data-section="account">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+          </button>
+          <button class="settings-nav-item" data-section="preferences">
+            <i class="fas fa-palette"></i>
+            <span>Preferences</span>
+          </button>
+          <button class="settings-nav-item" data-section="security">
+            <i class="fas fa-lock"></i>
+            <span>Security</span>
+          </button>
+          <button class="settings-nav-item danger" data-section="danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Danger Zone</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Settings Content -->
+      <div class="settings-content">
+        <!-- Account Section -->
+        <section class="settings-section active" id="account-section">
+          <div class="settings-header">
+            <h1>Profile Information</h1>
+            <p class="settings-subtitle">Manage your account details and profile picture.</p>
+          </div>
+          
+          <div class="profile-section">
+            <div class="profile-picture-section">
+              <div class="profile-picture">
+                <img src="https://i.pravatar.cc/150?img=12" alt="Profile Picture">
+              </div>
+              <button class="change-photo-btn">Change Photo</button>
+            </div>
+            
+            <div class="profile-details">
+              <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" value="John Smith" class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" value="john.smith@kjminimart.com" class="form-input">
+              </div>
+              
+              <div class="form-group">
+                <label for="role">Role</label>
+                <input type="text" id="role" value="Admin" class="form-input">
+              </div>
+            </div>
+          </div>
+          
+          <button class="edit-profile-btn">Edit Profile</button>
+        </section>
+
+        <!-- Preferences Section -->
+        <section class="settings-section" id="preferences-section">
+          <div class="preferences-tabs">
+            <button class="pref-tab active" data-pref="notifications">Notifications</button>
+            <button class="pref-tab" data-pref="theme">Theme & Display</button>
+            <button class="pref-tab" data-pref="system">System Preferences</button>
+          </div>
+
+          <!-- Notifications Tab -->
+          <div class="pref-content active" id="notifications-content">
+            <div class="settings-header">
+              <h1>Notifications</h1>
+              <p class="settings-subtitle">Control how you receive notifications from SmartForecast.</p>
+            </div>
+            
+            <div class="notification-list">
+              <div class="notification-item">
+                <div class="notification-info">
+                  <h3>Email Alerts</h3>
+                  <p>Receive important alerts via email</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="notification-item">
+                <div class="notification-info">
+                  <h3>System Notifications</h3>
+                  <p>Receive in-app notifications</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="notification-item">
+                <div class="notification-info">
+                  <h3>Predictive Expense Alerts</h3>
+                  <p>Get notified about predicted expense changes</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              
+              <div class="notification-item">
+                <div class="notification-info">
+                  <h3>Import Confirmation</h3>
+                  <p>Receive confirmation when data is imported</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+            
+            <button class="save-preferences-btn">Save Preferences</button>
+          </div>
+
+          <!-- Theme & Display Tab -->
+          <div class="pref-content" id="theme-content">
+            <div class="settings-header">
+              <h1>Theme & Display</h1>
+              <p class="settings-subtitle">Customize how SmartForecast looks and feels.</p>
+            </div>
+            
+            <div class="theme-options">
+              <div class="form-group">
+                <label>Theme Mode</label>
+                <div class="button-group">
+                  <button class="option-btn">Light Mode</button>
+                  <button class="option-btn active">Dark Mode</button>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Font Size</label>
+                <div class="button-group">
+                  <button class="option-btn">Small</button>
+                  <button class="option-btn active">Default</button>
+                  <button class="option-btn">Large</button>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="accent-color">Accent Color</label>
+                <select id="accent-color" class="form-select">
+                  <option>Blue</option>
+                  <option>Green</option>
+                  <option>Purple</option>
+                  <option>Orange</option>
+                  <option>Red</option>
+                </select>
+              </div>
+            </div>
+            
+            <button class="apply-changes-btn">Apply Changes</button>
+          </div>
+
+          <!-- System Preferences Tab -->
+          <div class="pref-content" id="system-content">
+            <div class="settings-header">
+              <h1>System Preferences</h1>
+              <p class="settings-subtitle">Configure how SmartForecast works for you.</p>
+            </div>
+            
+            <div class="system-options">
+              <div class="form-group">
+                <label for="date-range">Default Date Range</label>
+                <select id="date-range" class="form-select">
+                  <option>This Month</option>
+                  <option>Last Month</option>
+                  <option>This Quarter</option>
+                  <option>This Year</option>
+                  <option>Custom</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="forecast-view">Default Forecast View</label>
+                <select id="forecast-view" class="form-select">
+                  <option>Area Chart</option>
+                  <option>Line Chart</option>
+                  <option>Bar Chart</option>
+                  <option>Table View</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label>Default Export Format</label>
+                <div class="button-group">
+                  <button class="option-btn active">PDF</button>
+                  <button class="option-btn">Excel</button>
+                </div>
+              </div>
+            </div>
+            
+            <button class="save-preferences-btn">Save Preferences</button>
+          </div>
+        </section>
+
+        <!-- Security Section -->
+        <section class="settings-section" id="security-section">
+          <div class="settings-header">
+            <h1>Security & Activity</h1>
+            <p class="settings-subtitle">Review your account activity and manage security settings.</p>
+          </div>
+          
+          <div class="security-content">
+            <div class="change-password-section">
+              <h2>Change Password</h2>
+              <p class="section-subtitle">Update your password to keep your account secure.</p>
+              
+              <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <div class="password-input-wrapper">
+                  <input type="password" id="current-password" class="form-input">
+                  <button class="password-toggle" type="button">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="new-password">New Password</label>
+                <div class="password-input-wrapper">
+                  <input type="password" id="new-password" class="form-input">
+                  <button class="password-toggle" type="button">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="confirm-password">Confirm New Password</label>
+                <div class="password-input-wrapper">
+                  <input type="password" id="confirm-password" class="form-input">
+                  <button class="password-toggle" type="button">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="password-requirements">
+                <i class="fas fa-info-circle"></i>
+                <span>Password requirements</span>
+              </div>
+              
+              <button class="update-password-btn">Update Password</button>
+            </div>
+            
+            <div class="recent-logins-section">
+              <h2>Recent Logins</h2>
+              <div class="login-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>IP Address</th>
+                      <th>Device</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>June 3, 2025</td>
+                      <td>10:32 AM</td>
+                      <td>192.168.1.10</td>
+                      <td>Chrome (Windows)</td>
+                    </tr>
+                    <tr>
+                      <td>June 2, 2025</td>
+                      <td>09:15 AM</td>
+                      <td>192.168.1.10</td>
+                      <td>Chrome (Windows)</td>
+                    </tr>
+                    <tr>
+                      <td>June 1, 2025</td>
+                      <td>08:45 AM</td>
+                      <td>192.168.1.10</td>
+                      <td>Chrome (Windows)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="two-factor-section">
+              <div class="two-factor-header">
+                <div>
+                  <h2>Two-Factor Authentication</h2>
+                  <p class="section-subtitle">Add an extra layer of security</p>
+                </div>
+                <div class="coming-soon-badge">
+                  <span>Coming Soon</span>
+                  <label class="toggle-switch disabled">
+                    <input type="checkbox" disabled>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <button class="sign-out-all-btn">Sign Out All Sessions</button>
+          </div>
+        </section>
+
+        <!-- Danger Zone Section -->
+        <section class="settings-section" id="danger-section">
+          <div class="settings-header">
+            <h1>Danger Zone</h1>
+            <p class="settings-subtitle">Irreversible and destructive actions.</p>
+          </div>
+          
+          <div class="danger-actions">
+            <div class="danger-item">
+              <div class="danger-info">
+                <h3>Delete Account</h3>
+                <p>Once you delete your account, there is no going back. Please be certain.</p>
+              </div>
+              <button class="danger-btn">Delete Account</button>
+            </div>
+            
+            <div class="danger-item">
+              <div class="danger-info">
+                <h3>Export Data</h3>
+                <p>Download all your data before deleting your account.</p>
+              </div>
+              <button class="export-btn">Export Data</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+<!--sidebar-->    
+<aside class="sidebar">
+    <!--Sidebar Header -->
+    <header class ="sidebar-header">
+        <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+            <button class="sidebar-toggle">
+              <i class="iconsax" type="bold" icon="grid-4"></i>
+            </button>
+    </header>
+    <div class ="sidebar-content">
+        <!--search form -->
+        <form action="#" class="search-form">
+            <span class="search-icon">
+                <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+            </span>
+            <input type="search" placeholder="Search..." required />
+        </form>
+    <div class="menu-section-title">
+        <p>Main Navigation</p>
+    </div>
+        <!-- Menu list-->
+        <ul class="menu-list">
+            <li class="menu item">
+                <a href="Inventory_expense_analytics.html" class="menu-link active">
+                    <i class="iconsax" type="bold" icon="element-4"></i>
+                    <span class="menu-label">Dashboard</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Expense_tracking.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="receipt-search"></i>
+                    <span class="menu-label">Expense Tracking</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Budget_monitoring.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="wallet-search"></i>
+                    <span class="menu-label">Budget Monitoring</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Analytics.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="bar-chart-square-2"></i>
+                    <span class="menu-label">Analytics</span>
+                </a>
+            </li>
+        </ul>
+    <div class="menu-section-title">
+        <p>Support Settings</p>
+    </div>
+        <ul class="menu-list">
+            <li class="menu item">
+                <a href="Settings.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="setting-1"></i>
+                    <span class="menu-label">Settings</span>
+                </a>
+            </li>
+            <li class="menu item">
+                <a href="Help.html" class="menu-link">
+                    <i class="iconsax" type="bold" icon="message-question"></i>
+                    <span class="menu-label">Help</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--sidefooter-->
+    <div class="side-footer">
+        <button class ="logout-btn">
+            <div class ="logout-icon"></div>
+            <i class="iconsax" type="bold" icon="logout-1"></i>
+            <span class="logout-text">Logout</span>
+        </button>
+    </div>
+</aside>
+<script src="sidebar.js"></script>
+</body>
+</html>

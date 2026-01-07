@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Monitoring</title>
+    <link rel="stylesheet" href="Budget_monitoring.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Inventory_expense_style.css">
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+</head>
+<body>
+   <!--navbar-->
+   <nav class="navbar modern-navbar">
+    <div class="navbar-section navbar-section--left">
+      <div class="brand-group">
+        <span class="brand-icon">
+          <i class="iconsax" type="bold" icon="wallet-search"></i>
+        </span>
+        <span class="brand-title">Budget Monitoring</span>
+      </div>
+      <span class="brand-desc">Monitoring April 2025 plan and actual spending in one glance</span>
+    </div>
+    <div class="navbar-section navbar-section--center">
+      <div class="date-picker smart-date-picker">
+        <label for="dashboard-date-range" class="visually-hidden">Date Range</label>
+        <select id="dashboard-date-range" aria-label="Date range">
+          <option>April 1 – April 30, 2025</option>
+          <option>May 1 – May 31, 2025</option>
+          <option>June 1 – June 30, 2025</option>
+          <option>July 1 – July 31, 2025</option>
+        </select>
+        <i class="iconsax calendar-icon" type="bold" icon="calendar-1"></i>
+      </div>
+      <button class="rerun-btn modern-rerun-btn">
+        <i class="iconsax" type="bold" icon="refresh-circle"></i>
+        <span>Re-run Prediction</span>
+      </button>
+    </div>
+    <div class="navbar-section navbar-section--right">
+      <button class="navbar-icon-btn notification modern-notification" aria-label="Notifications">
+        <i class="iconsax" type="bold" icon="notification"></i>
+      </button>
+      <div class="divider-vertical"></div>
+      <div class="profile modern-profile" title="Account">
+        <img src="https://i.pravatar.cc/40" alt="Profile">
+      </div>
+    </div>
+  </nav>
+  <main> 
+    <div class="main-content">
+        <header class="page-header">
+            <div class="header-actions">
+                <button class="btn ghost">
+                  <i class="iconsax" type="bold" icon="clipboard-export"></i>
+                  Export Budget Report
+                </button>
+                <button class="btn ghost">
+                  <i class="iconsax" type="bold" icon="refresh-circle"></i>
+                  Sync with Expense Tracking
+                </button>
+        </header>
+        <section class="summary-stats">
+            <article class="stat-card accent-slate">
+                <div class="stat-card-top">
+                    <p>Total Budget Set</p>
+                    <span class="stat-icon">
+                        <i class="iconsax" type="bold" icon="dollar-circle"></i>
+                    </span>
+                </div>
+                <h2>Php 8,800</h2>
+                <span class="stat-pill slate">April 2025</span>
+            </article>
+            <article class="stat-card accent-coral">
+                <div class="stat-card-top">
+                    <p>Total Actual Expense</p>
+                    <span class="stat-icon">
+                        <i class="iconsax" type="bold" icon="trend-up"></i>
+                    </span>
+                </div>
+                <h2>Php 8,650</h2>
+                <span class="stat-pill coral">-1.8% vs budget</span>
+            </article>
+            <article class="stat-card accent-mint">
+                <div class="stat-card-top">
+                    <p>Remaining Budget</p>
+                    <span class="stat-icon">
+                        <i class="iconsax" type="bold" icon="trend-down"></i>
+                    </span>
+                </div>
+                <h2 class="green">Php 150</h2>
+                <span class="stat-pill mint">Good standing</span>
+            </article>
+            <article class="stat-card accent-pink">
+                <div class="stat-card-top">
+                    <p>Overbudget categories</p>
+                    <span class="stat-icon">
+                        <i class="iconsax" type="bold" icon="danger"></i>
+                    </span>
+                </div>
+                <h2>2 out of 6</h2>
+                <span class="stat-pill pink">Needs attention</span>
+            </article>
+        </section>
+
+        <section class="budget-layout">
+            <div class="budget-panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>April 2025 Budget Summary</h3>
+                        <p>Last update: April 11, 2025</p>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="btn ghost">
+                            <i class="iconsax" type="bold" icon="calendar-1"></i>
+                            Monthly
+                        </button>
+                        <button class="btn primary">
+                            <i class="iconsax" type="bold" icon="clipboard-export"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <header>
+                            <p>Budget Allocation</p>
+                            <span>6 categories</span>
+                        </header>
+                        <canvas id="allocationChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <header>
+                            <p>Budget vs Actual Trend</p>
+                            <span>Apr 2025</span>
+                        </header>
+                        <canvas id="budgetTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="category-cards">
+                    <article class="category-card" data-category="Beverages">
+                        <div class="card-head">
+                            <h4>Beverages</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 10,000</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 11,300</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                    <article class="category-card" data-category="Canned Goods">
+                        <div class="card-head">
+                            <h4>Canned Goods</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 15,000</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 15,000</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                    <article class="category-card" data-category="Frozen Goods">
+                        <div class="card-head">
+                            <h4>Frozen Goods</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 5,000</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 5,500</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                    <article class="category-card" data-category="Snacks">
+                        <div class="card-head">
+                            <h4>Snacks</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 20,000</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 19,800</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                    <article class="category-card" data-category="Condiments">
+                        <div class="card-head">
+                            <h4>Condiments</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 3,000</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 2,300</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                    <article class="category-card" data-category="Toiletries">
+                        <div class="card-head">
+                            <h4>Toiletries</h4>
+                            <span class="status-pill"></span>
+                        </div>
+                        <div class="card-values">
+                            <div>
+                                <p>Budgeted</p>
+                                <h3>Php 5,500</h3>
+                            </div>
+                            <div>
+                                <p>Actual</p>
+                                <h3 class="actual-amount">Php 5,000</h3>
+                            </div>
+                        </div>
+                        <div class="category-progress">
+                            <div class="progress-track">
+                                <span class="progress-fill"></span>
+                            </div>
+                            <small class="progress-label"></small>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="alerts-panel">
+                    <header>
+                        <h3>Alerts & Insights</h3>
+                        <button class="link-btn">View All</button>
+                    </header>
+                    <ul>
+                        <li>
+                            <span class="alert-icon over">!</span>
+                            <div>
+                                <p>Alert: You've exceeded your Frozen Goods budget by Php 500</p>
+                                <small>Consider reviewing usage or temporarily lowering this month’s allocation.</small>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="alert-icon over">!</span>
+                            <div>
+                                <p>Alert: Inventory Beverages exceeded budget by Php 1,300</p>
+                                <small>This is the second consecutive month of overspending. Review supplier pricing.</small>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="alert-icon tip">i</span>
+                            <div>
+                                <p>Tip: Your Condiments and Canned Goods dropped this month</p>
+                                <small>Consider reallocating funds to underperforming categories.</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <aside class="planner-panel">
+                <div class="planner-header">
+                    <h3>Set Monthly Budget</h3>
+                    <p>Plan upcoming month & trigger smart alerts.</p>
+                </div>
+                <div class="form-group">
+                    <label for="monthSelect">Select Month</label>
+                    <select id="monthSelect">
+                        <option>April 2025</option>
+                        <option>May 2025</option>
+                        <option>June 2025</option>
+                    </select>
+                </div>
+                <div class="form-grid">
+                    <label>Beverages<input type="number" value="10000"></label>
+                    <label>Frozen Goods<input type="number" value="5000"></label>
+                    <label>Canned Goods<input type="number" value="15000"></label>
+                    <label>Snacks<input type="number" value="20000"></label>
+                    <label>Condiments<input type="number" value="3000"></label>
+                    <label>Toiletries<input type="number" value="5500"></label>
+                </div>
+                <div class="toggle-control">
+                    <div>
+                        <p>Enable budget alerts</p>
+                        <small>Get notified when a category exceeds 90% of its budget.</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn primary full">Save Budget Plan</button>
+                <button class="btn outline full">View Previous Budgets</button>
+            </aside>
+        </section>
+    </div>
+  </main>      
+    <!--sidebar-->    
+    <aside class="sidebar">
+      <!--Sidebar Header -->
+      <header class ="sidebar-header">
+          <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+              <button class="sidebar-toggle">
+                  <i class="iconsax" type="bold" icon="grid-4"></i>
+              </button>
+      </header>
+      <div class ="sidebar-content">
+          <!--searh form -->
+          <form action="#" class="search-form">
+              <span class="search-icon">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+              <input type="search" placeholder="Search..." required />
+              </span>
+          </form>
+      <div class="menu-section-title">
+          <p>Main Navigation</p>
+      </div>
+          <!-- Menu list-->
+          <ul class="menu-list">
+              <li class="menu item">
+                  <a href="Inventory_expense_analytics.html" class="menu-link active">
+                      <i class="iconsax" type="bold" icon="element-4"></i>
+                      <span class="menu-label">Dashboard</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Expense_tracking.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="receipt-search"></i>
+                      <span class="menu-label">Expense Tracking</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Budget_monitoring.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="wallet-search"></i>
+                      <span class="menu-label">Budget Monitoring</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Analytics.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="bar-chart-square-2"></i>
+                      <span class="menu-label">Analytics</span>
+                  </a>
+              </li>
+          </ul>
+      <div class="menu-section-title">
+          <p>Support Settings</p>
+      </div>
+          <ul class="menu-list">
+              <li class="menu item">
+                  <a href="Settings.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="setting-1"></i>
+                      <span class="menu-label">Settings</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Help.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="message-question"></i>
+                      <span class="menu-label">Help</span>
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <!--sidefooter-->
+      <div class="side-footer">
+          <button class ="logout-btn">
+              <div class ="logout-icon"></div>
+              <i class="iconsax" type="bold" icon="logout-1"></i>
+              <span class="logout-text">Logout</span>
+          </button>
+      </div>
+  </aside>
+  <script src="sidebar.js"></script>
+    <script src="Budget_monitoring.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('/path/to/your/fonts/Inter-Regular.woff2') format('woff2'); /* Adjust path to your font file */
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/path/to/your/fonts/Inter-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 200px;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.container {
+    position: fixed;
+    left: 250px; /* small gap from left edge */
+    top: 50%; /* vertically center */
+    transform: translateY(-50%);
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    background-position: left;
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+
+.login-content {
+    padding: 50px;
+    z-index: 1;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.button {
+    display: block;
+    width: 300px;
+    padding: 15px 0;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.business {
+    background-color: #7a4b63;
+    margin-bottom: 30px;
+}
+
+.login {
+    background-color: #7a4b63;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative; /* make this the positioning context for the icon */
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    color: #2b0a28;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    box-sizing: border-box;
+}
+
+/* add extra right padding so the icon doesn't overlap the input text */
+.form-group input.with-icon {
+    padding-right: 44px; /* enough space for a 24px icon + padding */
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    color: #2b0a28;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+.form-group .iconsax {
+    position: absolute;
+    right: 20px; /* distance from the right edge of the input */
+    top: 50%;
+    transform: translateY(calc(-50% + 13px)); /* move icon a little down */
+    color: #2b0a28;
+    width: 15px;
+    height: 20px;
+    pointer-events: none; /* allow clicks to reach the input */
+}
+
+/* if the icon is inside a button or clickable element, enable pointer events */
+.form-group .icon-clickable {
+    pointer-events: auto;
+    cursor: pointer;
+}
+.logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 1000;
+    cursor: pointer;
+}
+.dashboard-image {
+    max-width: 700px;
+    width: auto;
+    height: auto;
+    position: fixed;
+    top: 50%;
+    left: calc(250px + 500px + 20px); /* 250 = .container left; 500 = .login-content total width (max-width 400 + 2*50px padding). Adjust if your layout differs */
+    transform: translateY(-50%);
+    border-radius: 25px;
+    z-index: 5;
+}

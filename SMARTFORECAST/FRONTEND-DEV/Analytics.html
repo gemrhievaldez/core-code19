@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Expense Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Analytics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Inventory_expense_style.css">
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+</head>
+<body>
+   <!--navbar-->
+   <nav class="navbar modern-navbar">
+    <div class="navbar-section navbar-section--left">
+      <div class="brand-group">
+        <span class="brand-icon">
+          <i class="iconsax" type="bold" icon="wallet-search"></i>
+        </span>
+        <span class="brand-title">Inventory Expense Analytics</span>
+      </div>
+      <span class="brand-desc">Visualize imported expenses, forecasts, and quick actions</span>
+    </div>
+    <div class="navbar-section navbar-section--center">
+      <div class="date-picker smart-date-picker">
+        <label for="dashboard-date-range" class="visually-hidden">Date Range</label>
+        <select id="dashboard-date-range" aria-label="Date range">
+          <option>April 1 – April 30, 2025</option>
+          <option>May 1 – May 31, 2025</option>
+          <option>June 1 – June 30, 2025</option>
+          <option>July 1 – July 31, 2025</option>
+        </select>
+        <i class="iconsax calendar-icon" type="bold" icon="calendar-1"></i>
+      </div>
+      <button class="rerun-btn modern-rerun-btn">
+        <i class="iconsax" type="bold" icon="refresh-circle"></i>
+        <span>Re-run Prediction</span>
+      </button>
+    </div>
+    <div class="navbar-section navbar-section--right">
+      <button class="navbar-icon-btn notification modern-notification" aria-label="Notifications">
+        <i class="iconsax" type="bold" icon="notification"></i>
+      </button>
+      <div class="divider-vertical"></div>
+      <div class="profile modern-profile" title="Account">
+        <img src="https://i.pravatar.cc/40" alt="Profile">
+      </div>
+    </div>
+  </nav>
+  <main class="main-content">
+    <section class="summary-grid">
+      <article class="summary-card">
+        <div class="card-top">
+          <p>Total Forecasted Expense</p>
+          <span class="chip chip-green">
+            <i class="iconsax" type="bold" icon="radar-2"></i>
+          </span>
+        </div>
+        <h2>Php <span id="totalForecast">15,320</span></h2>
+        <small>Based on 6 inventory categories</small>
+      </article>
+      <article class="summary-card">
+        <div class="card-top">
+          <p>Highest Spending Day</p>
+          <span class="chip chip-coral">
+            <i class="iconsax" type="bold" icon="trend-up"></i>
+          </span>
+        </div>
+        <h2>Php <span id="highestDayVal">2,800</span></h2>
+        <small>April 24, 2025</small>
+      </article>
+      <article class="summary-card">
+        <div class="card-top">
+          <p>Lowest Spending Day</p>
+          <span class="chip chip-indigo">
+            <i class="iconsax" type="bold" icon="trend-down"></i>
+          </span>
+        </div>
+        <h2>Php <span id="lowestDayVal">460</span></h2>
+        <small>April 7, 2025</small>
+      </article>
+      <article class="summary-card">
+        <div class="card-top">
+          <p>Most Expense Category</p>
+          <span class="chip chip-sand">
+            <i class="iconsax" type="bold" icon="line-graph-square-favorite"></i>
+          </span>
+        </div>
+        <h2>Php <span id="mostCatVal">5,600</span></h2>
+        <small>Frozen Goods • 36.5% of total</small>
+      </article>
+    </section>
+
+    <section class="insight-grid">
+      <div class="panel forecast-panel">
+        <header class="panel-header">
+          <div>
+            <h3>Inventory Expense Forecast</h3>
+            <p class="panel-sub">Forecast vs actual trend for May 2025</p>
+          </div>
+          <div class="toggle-pill">
+            <span>Shows Actual:</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleActual" checked>
+              <span class="slider"><span>On</span></span>
+            </label>
+          </div>
+        </header>
+        <div class="chart-wrapper area-chart">
+          <canvas id="forecastAreaChart"></canvas>
+        </div>
+        <div class="panel-annotations">
+          <span class="legend legend-forecast">Forecast</span>
+          <span class="legend legend-actual">Actual</span>
+          <span class="note">Speaking peak expected on May 24 · Inventory expenses steadily rising in week 3.</span>
+        </div>
+      </div>
+
+      <div class="panel category-panel">
+        <header class="panel-header">
+          <div>
+            <h3>Inventory Expense Forecast</h3>
+            <p class="panel-sub">Category contribution to this month</p>
+          </div>
+        </header>
+        <div class="chart-wrapper bar-chart">
+          <canvas id="categoryBarChart"></canvas>
+        </div>
+        <div class="panel-annotations">
+          <span class="note">Canned Goods account for 92.33% of May expenses.</span>
+        </div>
+      </div>
+
+      <aside class="panel insights-panel" aria-live="polite">
+        <header class="panel-header">
+          <div>
+            <h3>Insight Alerts</h3>
+            <p class="panel-sub">Auto-generated variance highlights</p>
+          </div>
+          <button class="refresh-chip" id="btnGenerateInsights" title="Generate insights again">
+            <i class="iconsax" type="bold" icon="refresh-circle"></i>
+          </button>
+        </header>
+        <div id="insightList" class="insight-list">
+          <!-- Filled by Analytics.js -->
+        </div>
+        <div id="quickInsights" class="insight-list insight-list-compact" aria-hidden="true"></div>
+      </aside>
+    </section>
+
+    <section class="export-panel">
+      <header>
+        <h3>Export & Report Actions</h3>
+        <p class="panel-sub">Share-ready downloads and summaries</p>
+      </header>
+      <div class="export-actions">
+        <div class="export-left">
+          <p>Export Analytics Report</p>
+          <div class="btn-group">
+            <button class="btn" id="btnExportPDF">
+              <i class="iconsax" type="bold" icon="document-download"></i>
+              PDF
+            </button>
+            <button class="btn" id="btnExportCSV">
+              <i class="iconsax" type="bold" icon="document-text-2"></i>
+              Excel
+            </button>
+          </div>
+          <div class="export-opts">
+            <label><input type="checkbox" checked id="optGraphs">Graphs</label>
+            <label><input type="checkbox" checked id="optSummary">Summary Cards</label>
+            <label><input type="checkbox" checked id="optInsights">Insights</label>
+          </div>
+        </div>
+        <div class="export-right">
+          <p>Generate Business Insight Summary</p>
+          <button class="btn primary" id="btnGenerateInsightsSecondary">
+            <i class="iconsax" type="bold" icon="magic-star"></i>
+            Generate Insights
+          </button>
+          <small class="panel-sub">Auto-generates a short narrative with key findings and suggestions.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+    <!--sidebar-->    
+    <aside class="sidebar">
+      <!--Sidebar Header -->
+      <header class ="sidebar-header">
+          <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+              <button class="sidebar-toggle">
+                <i class="iconsax" type="bold" icon="grid-4"></i>
+              </button>
+      </header>
+      <div class ="sidebar-content">
+          <!--searh form -->
+          <form action="#" class="search-form">
+              <span class="search-icon">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+              <input type="search" placeholder="Search..." required />
+              </span>
+          </form>
+      <div class="menu-section-title">
+          <p>Main Navigation</p>
+      </div>
+          <!-- Menu list-->
+          <ul class="menu-list">
+              <li class="menu item">
+                  <a href="Inventory_expense_analytics.html" class="menu-link active">
+                      <i class="iconsax" type="bold" icon="element-4"></i>
+                      <span class="menu-label">Dashboard</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Expense_tracking.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="receipt-search"></i>
+                      <span class="menu-label">Expense Tracking</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Budget_monitoring.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="wallet-search"></i>
+                      <span class="menu-label">Budget Monitoring</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Analytics.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="bar-chart-square-2"></i>
+                      <span class="menu-label">Analytics</span>
+                  </a>
+              </li>
+          </ul>
+      <div class="menu-section-title">
+          <p>Support Settings</p>
+      </div>
+          <ul class="menu-list">
+              <li class="menu item">
+                  <a href="Settings.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="setting-1"></i>
+                      <span class="menu-label">Settings</span>
+                  </a>
+              </li>
+              <li class="menu item">
+                  <a href="Help.html" class="menu-link">
+                      <i class="iconsax" type="bold" icon="message-question"></i>
+                      <span class="menu-label">Help</span>
+                  </a>
+              </li>
+          </ul>
+      </div>
+      <!--sidefooter-->
+      <div class="side-footer">
+          <button class ="logout-btn">
+              <div class ="logout-icon"></div>
+              <i class="iconsax" type="bold" icon="logout-1"></i>
+              <span class="logout-text">Logout</span>
+          </button>
+      </div>
+  </aside>
+  <script src="sidebar.js"></script>
+  <script src="Analytics.js" defer></script>
+</body>
+</html>
