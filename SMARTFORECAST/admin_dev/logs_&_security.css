@@ -1,0 +1,278 @@
+/* Logs & Security Page Styles */
+
+.logs-security-page {
+    max-width: 1200px;
+}
+
+/* Tab Navigation */
+.logs-tab-navigation {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.logs-tab-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.logs-tab-button:hover {
+    background: #e0e0e0;
+}
+
+.logs-tab-button.active {
+    background: #695CFE;
+    color: #fff;
+}
+
+.logs-tab-button .iconsax {
+    font-size: 18px;
+}
+
+/* Tab Content */
+.logs-tab-content {
+    display: none;
+}
+
+.logs-tab-content.active {
+    display: block;
+}
+
+.page-title {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1F2936;
+}
+
+.page-subtitle {
+    margin: 0 0 20px 0;
+    color: #798EAE;
+    font-size: 14px;
+}
+
+/* Toolbar */
+.logs-toolbar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+}
+
+.search-container .iconsax {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #798EAE;
+    font-size: 18px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1F2936;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #695CFE;
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+}
+
+.filter-dropdown-container {
+    position: relative;
+    display: inline-block;
+    min-width: 150px;
+}
+
+.filter-dropdown {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    color: #1F2936;
+    appearance: none;
+    cursor: pointer;
+}
+
+.filter-dropdown:focus {
+    outline: none;
+    border-color: #695CFE;
+}
+
+.filter-dropdown-container .iconsax {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #798EAE;
+    font-size: 16px;
+}
+
+/* Logs Card */
+.logs-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+/* Login Activity Table */
+.login-activity-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.login-activity-table thead {
+    background: #f9fafb;
+}
+
+.login-activity-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1F2936;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.login-activity-table td {
+    padding: 12px;
+    border-bottom: 1px solid #E2E8F0;
+    font-size: 14px;
+    color: #1F2936;
+}
+
+.login-activity-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-badge.success {
+    background: #695CFE;
+    color: #fff;
+}
+
+.status-badge.failed {
+    background: #E53935;
+    color: #fff;
+}
+
+.status-badge .iconsax {
+    font-size: 14px;
+}
+
+/* Change Logs List */
+.change-logs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.change-log-item {
+    display: flex;
+    gap: 12px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+.change-log-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.expand-icon {
+    color: #798EAE;
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.change-log-content {
+    flex: 1;
+}
+
+.change-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.change-log-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1F2936;
+}
+
+.change-log-meta {
+    font-size: 13px;
+    color: #798EAE;
+    margin-bottom: 6px;
+}
+
+.change-log-description {
+    font-size: 14px;
+    color: #1F2936;
+    margin-bottom: 8px;
+}
+
+.action-link-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid #695CFE;
+    border-radius: 6px;
+    color: #695CFE;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-link-btn:hover {
+    background: #695CFE;
+    color: #fff;
+}

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs & Security - Admin Dashboard</title>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="logs_&_security.css">
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar modern-navbar">
+      <div class="navbar-section navbar-section--left">
+        <div class="brand-group">
+          <span class="brand-icon">
+            <i class="iconsax" type="bold" icon="security"></i>
+          </span>
+          <span class="brand-title">Logs & Security</span>
+        </div>
+        <span class="brand-desc">Monitor system activity and security events</span>
+      </div>
+    </nav>
+
+    <!--main-->
+    <div class="main-content-area logs-security-page">
+        <!-- Tab Navigation -->
+        <div class="logs-tab-navigation">
+            <button class="logs-tab-button active" data-tab="login-activity-tab">
+                <i class="iconsax" type="bold" icon="security"></i>
+                Login Activity
+            </button>
+            <button class="logs-tab-button" data-tab="changes-logs-tab">
+                <i class="iconsax" type="bold" icon="document-text-1"></i>
+                Changes Logs
+            </button>
+        </div>
+
+        <!-- Login Activity Tab -->
+        <div id="login-activity-tab" class="logs-tab-content active">
+            <h2 class="page-title">Login Activity Log</h2>
+            <p class="page-subtitle">Monitor user authentication attempts and sessions</p>
+
+            <!-- Search and Filter -->
+            <div class="logs-toolbar">
+                <div class="search-container">
+                    <i class="iconsax" type="linear" icon="search-normal-1"></i>
+                    <input type="text" placeholder="Search by user or IP address..." class="search-input">
+                </div>
+                <div class="filter-dropdown-container">
+                    <select class="filter-dropdown">
+                        <option>All Status</option>
+                        <option>Success</option>
+                        <option>Failed</option>
+                    </select>
+                    <i class="iconsax" type="linear" icon="arrow-down-2"></i>
+                </div>
+            </div>
+
+            <!-- Login Activity Table -->
+            <div class="logs-card">
+                <table class="login-activity-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>IP Address</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>john.doe@company.com</td>
+                            <td>192.168.1.100</td>
+                            <td>2025-01-15 10:30:45</td>
+                            <td>
+                                <span class="status-badge success">
+                                    <i class="iconsax" type="bold" icon="tick-circle"></i>
+                                    Success
+                                </span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>jane.smith@company.com</td>
+                            <td>192.168.1.101</td>
+                            <td>2025-01-15 09:15:22</td>
+                            <td>
+                                <span class="status-badge success">
+                                    <i class="iconsax" type="bold" icon="tick-circle"></i>
+                                    Success
+                                </span>
+                            </td>
+                            <td>Manila, Taguig</td>
+                        </tr>
+                        <tr>
+                            <td>unknown@company.com</td>
+                            <td>45.123.45.67</td>
+                            <td>2025-01-15 08:45:12</td>
+                            <td>
+                                <span class="status-badge failed">
+                                    <i class="iconsax" type="bold" icon="close-circle"></i>
+                                    Failed
+                                </span>
+                            </td>
+                            <td>Manila, Paranaque</td>
+                        </tr>
+                        <tr>
+                            <td>mike.johnson@company.com</td>
+                            <td>192.168.1.102</td>
+                            <td>2025-01-15 08:30:18</td>
+                            <td>
+                                <span class="status-badge success">
+                                    <i class="iconsax" type="bold" icon="tick-circle"></i>
+                                    Success
+                                </span>
+                            </td>
+                            <td>Manila, Muntinlupa</td>
+                        </tr>
+                        <tr>
+                            <td>herbertpaez@company.com</td>
+                            <td>192.168.1.103</td>
+                            <td>2025-01-15 08:30:18</td>
+                            <td>
+                                <span class="status-badge success">
+                                    <i class="iconsax" type="bold" icon="tick-circle"></i>
+                                    Success
+                                </span>
+                            </td>
+                            <td>Manila, Paranaque</td>
+                        </tr>
+                        <tr>
+                            <td>gabeviterbo@company.com</td>
+                            <td>192.168.1.104</td>
+                            <td>2025-01-15 08:30:18</td>
+                            <td>
+                                <span class="status-badge success">
+                                    <i class="iconsax" type="bold" icon="tick-circle"></i>
+                                    Success
+                                </span>
+                            </td>
+                            <td>Manila, Paranaque</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Changes Logs Tab -->
+        <div id="changes-logs-tab" class="logs-tab-content">
+            <h2 class="page-title">System Change Logs</h2>
+            <p class="page-subtitle">Track system modifications and administrative actions</p>
+
+            <!-- Search and Filter -->
+            <div class="logs-toolbar">
+                <div class="search-container">
+                    <i class="iconsax" type="linear" icon="search-normal-1"></i>
+                    <input type="text" placeholder="Search by actions or user..." class="search-input">
+                </div>
+                <div class="filter-group">
+                    <div class="filter-dropdown-container">
+                        <select class="filter-dropdown">
+                            <option>All Actions</option>
+                            <option>User Created</option>
+                            <option>Settings Modified</option>
+                            <option>Backup Created</option>
+                            <option>Import Processed</option>
+                        </select>
+                        <i class="iconsax" type="linear" icon="arrow-down-2"></i>
+                    </div>
+                    <div class="filter-dropdown-container">
+                        <select class="filter-dropdown">
+                            <option>All Status</option>
+                            <option>Users actions</option>
+                            <option>Settings</option>
+                            <option>Backup</option>
+                            <option>Import</option>
+                        </select>
+                        <i class="iconsax" type="linear" icon="arrow-down-2"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Logs List -->
+            <div class="change-logs-list">
+                <div class="change-log-item">
+                    <i class="iconsax expand-icon" type="linear" icon="arrow-down-2"></i>
+                    <div class="change-log-content">
+                        <div class="change-log-header">
+                            <h4 class="change-log-title">User Created</h4>
+                        </div>
+                        <div class="change-log-meta">by admin@company.com | 2024-01-15 11:00:00</div>
+                        <div class="change-log-description">Created new user: sarah.wilson@company.com with role: staff</div>
+                    </div>
+                </div>
+
+                <div class="change-log-item">
+                    <i class="iconsax expand-icon" type="linear" icon="arrow-down-2"></i>
+                    <div class="change-log-content">
+                        <div class="change-log-header">
+                            <h4 class="change-log-title">Settings Modified</h4>
+                        </div>
+                        <div class="change-log-meta">by admin@company.com | 2024-01-15 10:45:00</div>
+                        <div class="change-log-description">Change max file upload size from 5MB to 10MB</div>
+                    </div>
+                </div>
+
+                <div class="change-log-item">
+                    <i class="iconsax expand-icon" type="linear" icon="arrow-down-2"></i>
+                    <div class="change-log-content">
+                        <div class="change-log-header">
+                            <h4 class="change-log-title">Backup Created</h4>
+                        </div>
+                        <div class="change-log-meta">by system | 2024-01-15 03:00:00</div>
+                        <div class="change-log-description">Schedule backup completed successfully (2.4GB)</div>
+                        <button class="action-link-btn">Backup System</button>
+                    </div>
+                </div>
+
+                <div class="change-log-item">
+                    <i class="iconsax expand-icon" type="linear" icon="arrow-down-2"></i>
+                    <div class="change-log-content">
+                        <div class="change-log-header">
+                            <h4 class="change-log-title">Import Processed</h4>
+                        </div>
+                        <div class="change-log-meta">by jane.smith@company.com | 2024-01-14 15:30:00</div>
+                        <div class="change-log-description">Imported expense_data_2025.xlsx with 10 records</div>
+                        <button class="action-link-btn">Import Management</button>
+                    </div>
+                </div>
+
+                <div class="change-log-item">
+                    <i class="iconsax expand-icon" type="linear" icon="arrow-down-2"></i>
+                    <div class="change-log-content">
+                        <div class="change-log-header">
+                            <h4 class="change-log-title">User Created</h4>
+                        </div>
+                        <div class="change-log-meta">by admin@company.com | 2024-01-15 11:00:00</div>
+                        <div class="change-log-description">Created new user: sarah.wilson@company.com with role: staff</div>
+                        <button class="action-link-btn">User Management</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--sidebar-->
+    <aside class="sidebar">
+        <!--Sidebar Header -->
+        <header class="sidebar-header">
+            <img src="Logo smartforecast.png" alt="Smartforecast" class="logo">
+            <button class="sidebar-toggle">
+                <i class="iconsax" type="bold" icon="grid-4"></i>
+            </button>
+        </header>
+        <div class="sidebar-content">
+            <!--search form -->
+            <form action="#" class="search-form">
+                <span class="search-icon">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+                    <input type="search" placeholder="Search..." required />
+                </span>
+            </form>
+            <div class="menu-section-title">
+                <p>Main Navigation</p>
+            </div>
+            <!-- Menu list-->
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="admin_dashboard.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="home-1"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Users_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="user-round-users-1"></i>
+                        <span class="menu-label">User Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Import_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="clipboard-import"></i>
+                        <span class="menu-label">Import Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Backup & Restore.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="driver-refresh"></i>
+                        <span class="menu-label">Backup & Restore</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="System_Settings.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="setting-1"></i>
+                        <span class="menu-label">System Settings</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Logs & Security.html" class="menu-link active">
+                        <i class="iconsax" type="bold" icon="security"></i>
+                        <span class="menu-label">Logs & Security</span>
+                    </a>
+                </li>
+            </ul>
+            <!--sidefooter-->
+            <div class="side-footer">
+                <button class="logout-btn">
+                    <div class="logout-icon"></div>
+                    <i class="iconsax" type="bold" icon="logout-1"></i>
+                    <span class="logout-text">Logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+    <script src="collapsing_sidebar.js"></script>
+    <script src="tabs.js"></script>
+</body>
+</html>

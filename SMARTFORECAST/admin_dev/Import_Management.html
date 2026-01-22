@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Management - Admin Dashboard</title>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="import_management.css">
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar modern-navbar">
+      <div class="navbar-section navbar-section--left">
+        <div class="brand-group">
+          <span class="brand-icon">
+            <i class="iconsax" type="bold" icon="clipboard-import"></i>
+          </span>
+          <span class="brand-title">Import Management</span>
+        </div>
+        <span class="brand-desc">Review and manage file imports for financial data</span>
+      </div>
+    </nav>
+  <!--main-->
+  <div class="main-content-area">
+    <div class="im-page">
+      <!-- List view -->
+      <section id="im-list-view" class="im-view">
+        <div class="im-filter-row" role="group" aria-label="Filter imports by status">
+          <div class="im-filter-label">Filter:</div>
+          <div class="im-filter-group">
+            <button type="button" class="im-filter-btn is-active" data-filter="all">All</button>
+            <button type="button" class="im-filter-btn" data-filter="pending">Pending</button>
+            <button type="button" class="im-filter-btn" data-filter="approved">Approved</button>
+            <button type="button" class="im-filter-btn" data-filter="rejected">Rejected</button>
+          </div>
+        </div>
+
+        <div class="card full im-card">
+          <div class="im-table-shell" aria-label="Import files table">
+            <table class="im-table">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Uploaded By</th>
+                  <th>Upload Date &amp; Time</th>
+                  <th>File Type</th>
+                  <th>Status</th>
+                  <th class="im-th-actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="im-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="im-empty-state" class="im-empty" hidden>
+            <div class="im-empty-title">No imports found</div>
+            <div class="im-empty-subtitle">Try changing the filter.</div>
+          </div>
+        </div>
+
+        <div id="im-global-menu" class="im-menu im-global-menu" role="menu" aria-label="Import actions" hidden>
+          <button type="button" class="im-menu-item" data-action="download" role="menuitem">Download File</button>
+          <button type="button" class="im-menu-item" data-action="history" role="menuitem">View History</button>
+          <button type="button" class="im-menu-item im-menu-item--danger" data-action="delete" role="menuitem">Delete</button>
+        </div>
+      </section>
+
+      <!-- Detail view -->
+      <section id="im-detail-view" class="im-view" hidden>
+        <button type="button" class="im-back-link" id="im-back-btn">
+          <span class="im-back-arrow">←</span>
+          <span>Back to Imports</span>
+        </button>
+
+        <div class="card full im-detail-card">
+          <div class="im-section-title">File Information</div>
+          <div class="im-info-grid">
+            <div class="im-info-item">
+              <div class="im-info-label">FILE NAME</div>
+              <div class="im-info-value" id="im-detail-file-name">—</div>
+            </div>
+            <div class="im-info-item">
+              <div class="im-info-label">UPLOADED BY</div>
+              <div class="im-info-value" id="im-detail-uploaded-by">—</div>
+            </div>
+            <div class="im-info-item">
+              <div class="im-info-label">TOTAL ROWS</div>
+              <div class="im-info-value" id="im-detail-total-rows">—</div>
+            </div>
+            <div class="im-info-item">
+              <div class="im-info-label">DATE UPLOADED</div>
+              <div class="im-info-value" id="im-detail-uploaded-at">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card full im-detail-card">
+          <div class="im-section-title">Data Preview</div>
+          <div class="im-section-subtitle" id="im-preview-note">Showing first 0 rows</div>
+          <div class="im-table-shell im-table-shell--preview">
+            <table class="im-table im-table--preview">
+              <thead>
+                <tr>
+                  <th>DATE</th>
+                  <th>PRODUCT NAME</th>
+                  <th>CATEGORY</th>
+                  <th>QUANTITY</th>
+                  <th>UNIT PRICE</th>
+                  <th>TOTAL COST</th>
+                </tr>
+              </thead>
+              <tbody id="im-preview-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card full im-detail-card">
+          <div class="im-section-title">Admin Decision</div>
+
+          <div id="im-decision-buttons" class="im-decision-buttons">
+            <button type="button" class="im-btn im-btn-approve" data-decision="approve">
+              <span class="im-btn-icon">✓</span>
+              <span>Approve Import</span>
+            </button>
+            <button type="button" class="im-btn im-btn-reject" data-decision="reject">
+              <span class="im-btn-icon">×</span>
+              <span>Reject Import</span>
+            </button>
+          </div>
+
+          <form id="im-decision-form" class="im-decision-form" hidden>
+            <div class="im-form-row">
+              <label class="im-form-label" for="im-action-select">Select Action</label>
+              <div class="im-select-wrap">
+                <select id="im-action-select" class="im-select">
+                  <option value="">Choose an action...</option>
+                  <option value="approve">Approve</option>
+                  <option value="reject">Reject</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="im-form-row" id="im-reject-reason-row">
+              <label class="im-form-label" for="im-reason-select">Rejection Reason (if applicable)</label>
+              <div class="im-select-wrap">
+                <select id="im-reason-select" class="im-select">
+                  <option value="">Select reason...</option>
+                  <option value="invalid-format">Invalid file format</option>
+                  <option value="missing-columns">Missing required columns</option>
+                  <option value="duplicate-data">Duplicate data</option>
+                  <option value="out-of-range">Invalid values / out of range</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="im-form-row">
+              <label class="im-form-label" for="im-comments">Comments (Optional)</label>
+              <textarea id="im-comments" class="im-textarea" rows="4" placeholder="Add any additional notes..."></textarea>
+            </div>
+
+            <div class="im-form-actions">
+              <button type="submit" class="im-btn im-btn-confirm" id="im-confirm-btn">Confirm</button>
+              <button type="button" class="im-btn im-btn-cancel" id="im-cancel-btn">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!--sidebar-->    
+    <aside class="sidebar">
+        <!--Sidebar Header -->
+        <header class ="sidebar-header">
+            <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+                <button class="sidebar-toggle">
+                  <i class="iconsax" type="bold" icon="grid-4"></i>
+                </button>
+        </header>
+        <div class ="sidebar-content">
+            <!--searh form -->
+            <form action="#" class="search-form">
+                <span class="search-icon">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+                <input type="search" placeholder="Search..." required />
+                </span>
+            </form>
+        <div class="menu-section-title">
+            <p>Main Navigation</p>
+        </div>
+            <!-- Menu list-->
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="admin_dashboard.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="home-1"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Users_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="user-round-users-1"></i>
+                        <span class="menu-label">User Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Import_Management.html" class="menu-link active">
+                        <i class="iconsax" type="bold" icon="clipboard-import"></i>
+                        <span class="menu-label">Import Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Backup & Restore.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="driver-refresh"></i>
+                        <span class="menu-label">Backup & Restore</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="System_Settings.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="setting-1"></i>
+                        <span class="menu-label">System Settings</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Logs & Security.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="security"></i>
+                        <span class="menu-label">Logs & Security</span>
+                    </a>
+                </li>
+            </ul>
+        <!--sidefooter-->
+        <div class="side-footer">
+            <button class ="logout-btn">
+                <div class ="logout-icon"></div>
+                <i class="iconsax" type="bold" icon="logout-1"></i>
+                <span class="logout-text">Logout</span>
+            </button>
+        </div>
+    </aside>
+    <script src="collapsing_sidebar.js"></script>
+    <script src="tabs.js"></script>
+    <script src="import_management.js"></script>
+</body>
+</html>

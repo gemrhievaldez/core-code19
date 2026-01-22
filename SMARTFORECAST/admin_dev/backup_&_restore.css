@@ -1,0 +1,205 @@
+/* Tab Navigation Styles for Backup & Restore */
+.tab-navigation {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+    border-bottom: none;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-button:hover {
+    background: #e0e0e0;
+}
+
+.tab-button.active {
+    background: #695CFE;
+    color: #fff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Backup Card Styles */
+.backup-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.backup-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #1F2936;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.backup-card .subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.backup-button {
+    padding: 12px 24px;
+    background: #695CFE;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.backup-button:hover {
+    background: #5247e4;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: #695CFE;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Backup History Table */
+.backup-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.backup-history-table th,
+.backup-history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.backup-history-table th {
+    font-weight: 600;
+    color: #1F2936;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-badge.success {
+    background: #695CFE;
+    color: #fff;
+}
+
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #f0f0f0;
+    color: #666;
+}
+
+.backup-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.backup-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.backup-action-btn.settings {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.backup-action-btn.restore {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.backup-action-btn:hover {
+    transform: scale(1.1);
+}
+

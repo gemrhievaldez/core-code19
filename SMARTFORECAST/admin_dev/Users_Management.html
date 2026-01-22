@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Admin Dashboard</title>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="user_management.css">
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar modern-navbar">
+      <div class="navbar-section navbar-section--left">
+        <div class="brand-group">
+          <span class="brand-icon">
+            <i class="iconsax" type="bold" icon="user-round-users-1"></i>
+          </span>
+          <span class="brand-title">User Management</span>
+        </div>
+        <span class="brand-desc">Add, edit, or remove users</span>
+      </div>
+      <div class="navbar-section navbar-section--right">
+        <button class="modern-rerun-btn add-user-btn">
+          <i class="iconsax" type="bold" icon="add"></i>
+          <span>Add user</span>
+        </button>
+      </div>
+    </nav>
+  <!--main-->
+  <div class="main-content-area">
+    <h2 class="page-title">User Management</h2>
+    <p class="page-subtitle">Add, edit, or remove users</p>
+    
+    <div class="tab-navigation">
+      <button class="tab-button active" data-tab="users-tab">Users</button>
+    </div>
+
+    <div id="users-tab" class="tab-content active">
+      <div class="card full">
+        <h3>Users</h3>
+        <p class="subtitle">Manage system users and their permissions</p>
+
+      <div class="toolbar">
+        <div class="search-wrapper">
+          <i class="iconsax" type="linear" icon="search-normal-1"></i>
+          <input type="text" placeholder="Search users.........." class="user-search-input">
+        </div>
+        <div class="role-filter-wrapper">
+          <select class="role-filter">
+            <option>All Roles</option>
+            <option>Business Owner</option>
+            <option>Staff</option>
+          </select>
+          <i class="iconsax" type="linear" icon="arrow-down-2"></i>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td>
+            <td>john@company.com</td>
+            <td>Business Owner</td>
+            <td><span class="status active">Active</span></td>
+            <td class="actions">
+              <i class="iconsax" type="bold" icon="edit"></i>
+              <i class="iconsax" type="bold" icon="trash"></i>
+            </td>
+          </tr>
+          <tr>
+            <td>Jane Smith</td>
+            <td>jane@company.com</td>
+            <td>Staff</td>
+            <td><span class="status active">Active</span></td>
+            <td class="actions">
+              <i class="iconsax" type="bold" icon="edit"></i>
+              <i class="iconsax" type="bold" icon="trash"></i>
+            </td>
+          </tr>
+          <tr>
+            <td>Mike Johnson</td>
+            <td>mike@company.com</td>
+            <td>Staff</td>
+            <td><span class="status inactive">inactive</span></td>
+            <td class="actions">
+              <i class="iconsax" type="bold" icon="edit"></i>
+              <i class="iconsax" type="bold" icon="trash"></i>
+            </td>
+          </tr>
+          <tr>
+            <td>Sarah Wilson</td>
+            <td>sarah@company.com</td>
+            <td>Business Owner</td>
+            <td><span class="status active">Active</span></td>
+            <td class="actions">
+              <i class="iconsax" type="bold" icon="edit"></i>
+              <i class="iconsax" type="bold" icon="trash"></i>
+            </td>
+          </tr>
+          <tr>
+            <td>Norman Santor</td>
+            <td>norman@company.com</td>
+            <td>Business Owner</td>
+            <td><span class="status active">Active</span></td>
+            <td class="actions">
+              <i class="iconsax" type="bold" icon="edit"></i>
+              <i class="iconsax" type="bold" icon="trash"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+    </main>
+  <!--sidebar-->    
+    <aside class="sidebar">
+        <!--Sidebar Header -->
+        <header class ="sidebar-header">
+            <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+                <button class="sidebar-toggle">
+                  <i class="iconsax" type="bold" icon="grid-4"></i>
+                </button>
+        </header>
+        <div class ="sidebar-content">
+            <!--searh form -->
+            <form action="#" class="search-form">
+                <span class="search-icon">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+                <input type="search" placeholder="Search..." required />
+                </span>
+            </form>
+        <div class="menu-section-title">
+            <p>Main Navigation</p>
+        </div>
+            <!-- Menu list-->
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="admin_dashboard.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="home-1"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Users_Management.html" class="menu-link active">
+                        <i class="iconsax" type="bold" icon="user-round-users-1"></i>
+                        <span class="menu-label">User Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Import_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="clipboard-import"></i>
+                        <span class="menu-label">Import Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Backup & Restore.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="driver-refresh"></i>
+                        <span class="menu-label">Backup & Restore</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="System_Settings.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="setting-1"></i>
+                        <span class="menu-label">System Settings</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Logs & Security.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="security"></i>
+                        <span class="menu-label">Logs & Security</span>
+                    </a>
+                </li>
+            </ul>
+        <!--sidefooter-->
+        <div class="side-footer">
+            <button class ="logout-btn">
+                <div class ="logout-icon"></div>
+                <i class="iconsax" type="bold" icon="logout-1"></i>
+                <span class="logout-text">Logout</span>
+            </button>
+        </div>
+    </aside>
+    <script src="collapsing_sidebar.js"></script>
+    <script src="tabs.js"></script>
+</body>
+</html>

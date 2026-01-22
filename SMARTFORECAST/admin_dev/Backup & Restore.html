@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup & Restore - Admin Dashboard</title>
+    <script src="https://grxvityhj.github.io/iconsax/script.js"></script>
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="backup_&_restore.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--navbar-->
+    <nav class="navbar modern-navbar">
+      <div class="navbar-section navbar-section--left">
+        <div class="brand-group">
+          <span class="brand-icon">
+            <i class="iconsax" type="bold" icon="box-1"></i>
+          </span>
+          <span class="brand-title">Admin Dashboard</span>
+        </div>
+        <span class="brand-desc">System Overview and recent activity</span>
+      </div>
+    </nav>
+  <!--main-->
+  <div class="main-content-area">
+    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: #1F2936;">Backup & Restore</h2>
+    <p class="subtitle" style="margin: 0 0 20px 0; color: #798EAE; font-size: 14px;">Manage system backups and restore data</p>
+    
+    <div class="tab-navigation">
+      <button class="tab-button active" data-tab="backup-tab">Manual Backup</button>
+      <button class="tab-button" data-tab="backup-history-tab">Backup History</button>
+    </div>
+
+    <!-- Manual Backup Tab -->
+    <div id="backup-tab" class="tab-content active">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <!-- Manual Backup Card -->
+        <div class="backup-card">
+          <h3>
+            <i class="iconsax" icon-name="database" style="font-size: 20px; color: #695CFE;"></i>
+            Manual Backup
+          </h3>
+          <p class="subtitle">Create an immediate backup your data</p>
+          <button class="backup-button">
+            <i class="iconsax" icon-name="database"></i>
+            Start Manual Backup
+          </button>
+        </div>
+
+        <!-- Auto-Backup Settings Card -->
+        <div class="backup-card">
+          <h3>
+            <i class="iconsax" icon-name="database" style="font-size: 20px; color: #695CFE;"></i>
+            Auto-Backup Settings
+          </h3>
+          <p class="subtitle">Create an immediate backup your data</p>
+          
+          <div style="margin-bottom: 15px;">
+            <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+              <span style="font-size: 14px; font-weight: 500; color: #1F2936;">Enable Auto Backup</span>
+              <label class="toggle-switch">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </label>
+          </div>
+
+          <div>
+            <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #1F2936;">Backup Interval</label>
+            <select style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px;">
+              <option>Daily</option>
+              <option>Weekly</option>
+              <option>Monthly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backup History Tab -->
+    <div id="backup-history-tab" class="tab-content">
+      <div class="backup-card">
+        <h3>Backup History</h3>
+        <p class="subtitle">View and manage existing backups</p>
+
+        <table class="backup-history-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>File Size</th>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-01-15 | 03:00:00</td>
+              <td>2.4 GB</td>
+              <td>
+                <span class="status-badge success">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="tick-circle"></i>
+                  Success
+                </span>
+              </td>
+              <td>
+                <span class="type-badge">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="clock-1"></i>
+                  Schedule
+                </span>
+              </td>
+              <td>
+                <div class="backup-actions">
+                  <button class="backup-action-btn settings" title="Settings">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="document-download"></i>
+                  </button>
+                  <button class="backup-action-btn restore" title="Restore">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="refresh-circle"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>2025-01-14 | 03:00:00</td>
+              <td>2.3 GB</td>
+              <td>
+                <span class="status-badge success">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="tick-circle"></i>
+                  Success
+                </span>
+              </td>
+              <td>
+                <span class="type-badge">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="clock-1"></i>
+                  Schedule
+                </span>
+              </td>
+              <td>
+                <div class="backup-actions">
+                  <button class="backup-action-btn settings" title="Settings">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="document-download"></i>
+                  </button>
+                  <button class="backup-action-btn restore" title="Restore">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="refresh-circle"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>2025-01-13 | 15:30:00</td>
+              <td>2.3 GB</td>
+              <td>
+                <span class="status-badge success">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="tick-circle"></i>
+                  Success
+                </span>
+              </td>
+              <td>
+                <span class="type-badge">
+                  <i class="iconsax" type="linear" stroke-width="1.5" icon="clock-1"></i>
+                  Manual
+                </span>
+              </td>
+              <td>
+                <div class="backup-actions">
+                  <button class="backup-action-btn settings" title="Settings">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="document-download"></i>
+                  </button>
+                  <button class="backup-action-btn restore" title="Restore">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="refresh-circle"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>2025-01-12 | 03:00:00</td>
+              <td>2.2 GB</td>
+              <td>
+                <span class="status-badge success">
+                  <i class="iconsax" icon-name="tick-circle" style="font-size: 14px;"></i>
+                  Success
+                </span>
+              </td>
+              <td>
+                <span class="type-badge">
+                  <i class="iconsax" icon-name="clock" style="font-size: 14px;"></i>
+                  Schedule
+                </span>
+              </td>
+              <td>
+                <div class="backup-actions">
+                  <button class="backup-action-btn settings" title="Settings">
+                    <i class="iconsax" icon-name="setting-2"></i>
+                  </button>
+                  <button class="backup-action-btn restore" title="Restore">
+                    <i class="iconsax" icon-name="refresh"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    </main>
+  <!--sidebar-->    
+    <aside class="sidebar">
+        <!--Sidebar Header -->
+        <header class ="sidebar-header">
+            <img src ="Logo smartforecast.png" alt = "Smartforecast" class = "logo">
+                <button class="sidebar-toggle">
+                  <i class="iconsax" type="bold" icon="grid-4"></i>
+                </button>
+        </header>
+        <div class ="sidebar-content">
+            <!--searh form -->
+            <form action="#" class="search-form">
+                <span class="search-icon">
+                    <i class="iconsax" type="linear" stroke-width="1.5" icon="search-1"></i>
+                <input type="search" placeholder="Search..." required />
+                </span>
+            </form>
+        <div class="menu-section-title">
+            <p>Main Navigation</p>
+        </div>
+            <!-- Menu list-->
+            <ul class="menu-list">
+                <li class="menu item">
+                    <a href="admin_dashboard.html" class="menu-link active">
+                        <i class="iconsax" type="bold" icon="home-1"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Users_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="user-round-users-1"></i>
+                        <span class="menu-label">User Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Import_Management.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="clipboard-import"></i>
+                        <span class="menu-label">Import Management</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Backup & Restore.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="driver-refresh"></i>
+                        <span class="menu-label">Backup & Restore</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="System_Settings.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="setting-1"></i>
+                        <span class="menu-label">System Settings</span>
+                    </a>
+                </li>
+                <li class="menu item">
+                    <a href="Logs & Security.html" class="menu-link">
+                        <i class="iconsax" type="bold" icon="security"></i>
+                        <span class="menu-label">Logs & Security</span>
+                    </a>
+                </li>
+            </ul>
+        <!--sidefooter-->
+        <div class="side-footer">
+            <button class ="logout-btn">
+                <div class ="logout-icon"></div>
+                <i class="iconsax" type="bold" icon="logout-1"></i>
+                <span class="logout-text">Logout</span>
+            </button>
+        </div>
+    </aside>
+    <script src="collapsing_sidebar.js"></script>
+    <script src="tabs.js"></script>
+</body>
+</html>
+
